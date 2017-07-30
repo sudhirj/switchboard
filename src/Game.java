@@ -1,13 +1,20 @@
-import java.util.Collection;
 
-public interface Game<S extends Supply, D extends Demand> {
-    Game<S, D> choose(Choice<S, D> player);
+import com.google.common.collect.Table;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+
+public interface Game<S extends Supply<D>, D extends Demand> {
+    Game<S, D> choose(Choice<S, D> choice);
 
     boolean isFinished();
 
-    Collection<Choice<S, D>> choices();
+    Set<Choice<S, D>> availableChoices();
 
     Collection<D> unmetDemands();
 
-    Collection<Game<S, D>> previousStates();
+    Table<S, D, Choice<S, D>> matrix();
+
+    List<Table<S, D, Choice<S, D>>> previousMatrices();
 }
