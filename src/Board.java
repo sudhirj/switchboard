@@ -1,12 +1,11 @@
-
 import com.google.common.collect.Table;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-public interface Game<S extends Supply<D>, D extends Demand> {
-    Game<S, D> choose(Choice<S, D> choice);
+public interface Board<S extends Supply<D>, D extends Demand> {
+    Board<S, D> choose(Choice<S, D> choice);
 
     boolean isFinished();
 

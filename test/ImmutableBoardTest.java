@@ -1,3 +1,4 @@
+import com.google.common.collect.ImmutableSet;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -7,17 +8,19 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ImmutableGameTest {
+import static org.junit.Assert.*;
+
+public class ImmutableBoardTest {
     private List<ConstantDemand> demands;
-    private List<ConstantSupply<ConstantDemand>> supplies;
-    private ImmutableGame game;
+    private List<ConstantSupply> supplies;
+    private ImmutableBoard<ConstantSupply, ConstantDemand> board;
 
     @Before
     public void setUp() throws Exception {
         Collection<String> types = Arrays.asList("a", "b", "c", "d", "e");
         supplies = types.stream().map(ConstantSupply::new).collect(Collectors.toList());
         demands = types.stream().map(ConstantDemand::new).collect(Collectors.toList());
-        game = new ImmutableGame(supplies, demands);
+        board = new ImmutableBoard<>(supplies, demands);
     }
 
     @Test
@@ -32,15 +35,22 @@ public class ImmutableGameTest {
 
     @Test
     public void isFinished() throws Exception {
+        assertFalse(board.isFinished());
     }
 
 
     @Test
     public void unmetDemands() throws Exception {
+        System.out.println(ImmutableSet.copyOf(board.unmetDemands()));
+        assertEquals(ImmutableSet.copyOf(board.unmetDemands()), ImmutableSet.copyOf(demands));
     }
 
     @Test
     public void matrix() throws Exception {
+        assertNull(board.matrix().get(new ConstantSupply("a"), new ConstantDemand("b")));
+        assertNull(board.matrix().get(new ConstantSupply("a"), new ConstantDemand("d")));
+        assertEquals(42, board.matrix().get(new ConstantSupply("a"), new ConstantDemand("a")).score());
+//        assertEquals(42, board.matrix().get(new ConstantSupply<>("b"), new ConstantDemand("b")).score());
     }
 
     @Test
@@ -50,6 +60,4 @@ public class ImmutableGameTest {
     @After
     public void tearDown() throws Exception {
     }
-
-
 }
