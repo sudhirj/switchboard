@@ -1,4 +1,4 @@
-import java.util.List;
+import java.util.Collection;
 import java.util.Objects;
 
 public class ConstantSupply implements Supply<ConstantDemand> {
@@ -9,7 +9,7 @@ public class ConstantSupply implements Supply<ConstantDemand> {
     }
 
     @Override
-    public Choice<Supply<ConstantDemand>, ConstantDemand> estimateFor(ConstantDemand demand, List<ConstantDemand> commitments) {
+    public Choice<Supply<ConstantDemand>, ConstantDemand> estimateFor(ConstantDemand demand, Collection<ConstantDemand> commitments) {
         if (Objects.equals(this.type, demand.type)) {
             return () -> 42;
         }
