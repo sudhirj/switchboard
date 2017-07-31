@@ -50,7 +50,7 @@ public class ImmutableBoardTest {
         assertNull(board.matrix().get(new ConstantSupply("a"), new ConstantDemand("b")));
         assertNull(board.matrix().get(new ConstantSupply("a"), new ConstantDemand("d")));
         assertEquals(42, board.matrix().get(new ConstantSupply("a"), new ConstantDemand("a")).score());
-//        assertEquals(42, board.matrix().get(new ConstantSupply<>("b"), new ConstantDemand("b")).score());
+        assertEquals(42, board.matrix().get(new ConstantSupply("b"), new ConstantDemand("b")).score());
     }
 
     @Test
