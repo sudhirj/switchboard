@@ -1,3 +1,4 @@
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import org.junit.After;
 import org.junit.Before;
@@ -25,12 +26,14 @@ public class ImmutableBoardTest {
 
     @Test
     public void availableChoices() throws Exception {
-
+        assertEquals(5, board.availableChoices().size());
     }
 
     @Test
     public void choose() throws Exception {
-
+        Choice<Supply<ConstantDemand>, ConstantDemand> firstChoice = board.availableChoices().iterator().next();
+        Board<Supply<ConstantDemand>, ConstantDemand> newBoard = board.choose(firstChoice);
+        assertEquals(ImmutableList.of(firstChoice), ImmutableList.copyOf(newBoard.choicesMade()));
     }
 
     @Test
@@ -41,8 +44,11 @@ public class ImmutableBoardTest {
 
     @Test
     public void unmetDemands() throws Exception {
-        System.out.println(ImmutableSet.copyOf(board.unmetDemands()));
         assertEquals(ImmutableSet.copyOf(board.unmetDemands()), ImmutableSet.copyOf(demands));
+        Choice<Supply<ConstantDemand>, ConstantDemand> firstChoice = board.availableChoices().iterator().next();
+        assertTrue(board.unmetDemands().contains(firstChoice.demand()));
+        Board<Supply<ConstantDemand>, ConstantDemand> newBoard = board.choose(firstChoice);
+        assertFalse(newBoard.unmetDemands().contains(firstChoice.demand()));
     }
 
     @Test

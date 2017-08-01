@@ -11,7 +11,7 @@ public class ConstantSupply implements Supply<ConstantDemand> {
     @Override
     public Choice<Supply<ConstantDemand>, ConstantDemand> estimateFor(ConstantDemand demand, Collection<ConstantDemand> commitments) {
         if (Objects.equals(this.type, demand.type)) {
-            return () -> 42;
+            return new ConstantChoice<>(this, demand, 42);
         }
         return null;
     }
