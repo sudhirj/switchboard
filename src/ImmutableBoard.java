@@ -26,9 +26,9 @@ public class ImmutableBoard<S extends Supply<D>, D extends Demand> implements Bo
         ImmutableTable.Builder<Supply<D>, D, Choice<Supply<D>, D>> builder = ImmutableTable.builder();
         for (S supply : supplies) {
             for (D demand : demands) {
-                Choice<Supply<D>, D> choice = supply.estimateFor(demand, null);
-                if (choice != null) {
-                    builder.put(supply, demand, choice);
+                Choice<Supply<D>, D> estimate = supply.estimateFor(demand, null);
+                if (estimate != null) {
+                    builder.put(supply, demand, estimate);
                 }
             }
         }
@@ -65,12 +65,12 @@ public class ImmutableBoard<S extends Supply<D>, D extends Demand> implements Bo
     }
 
     @Override
-    public List<Table<Supply<D>, D, Choice<Supply<D>, D>>> previousMatrices() {
+    public List<Board<Supply<D>, D>> history() {
         return null;
     }
 
     @Override
-    public Collection<Choice<Supply<D>, D>> choicesMade() {
+    public List<Choice<Supply<D>, D>> choicesMade() {
         return this.choices;
     }
 }

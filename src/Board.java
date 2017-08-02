@@ -14,7 +14,7 @@ public interface Board<S extends Supply<D>, D extends Demand> {
 
     Table<S, D, Choice<S, D>> matrix();
 
-    List<Table<S, D, Choice<S, D>>> previousMatrices();
+    List<Board<S, D>> history();
 
-    Collection<Choice<S, D>> choicesMade();
+    List<Choice<S, D>> choicesMade();
 }
