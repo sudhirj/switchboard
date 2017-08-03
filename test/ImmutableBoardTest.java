@@ -56,8 +56,6 @@ public class ImmutableBoardTest {
         assertFalse(currentBoard.canProceed());
     }
 
-
-
     @Test
     public void unmetDemands() throws Exception {
         assertEquals(ImmutableSet.copyOf(board.unmetDemands()), ImmutableSet.copyOf(demands));
