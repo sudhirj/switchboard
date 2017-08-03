@@ -27,6 +27,10 @@ public class ImmutableBoardTest {
     @Test
     public void availableChoices() throws Exception {
         assertEquals(5, board.availableChoices().size());
+        Choice<Supply<ConstantDemand>, ConstantDemand> firstChoice = ImmutableList.copyOf(board.availableChoices()).get(0);
+        Board<Supply<ConstantDemand>, ConstantDemand> newBoard = board.choose(firstChoice);
+        assertEquals(4, newBoard.availableChoices().size());
+        assertFalse(newBoard.availableChoices().contains(firstChoice));
     }
 
     @Test
@@ -37,9 +41,21 @@ public class ImmutableBoardTest {
     }
 
     @Test
-    public void isFinished() throws Exception {
-        assertFalse(board.isFinished());
+    public void completeness() throws Exception {
+        Board<Supply<ConstantDemand>, ConstantDemand> currentBoard = board;
+        assertFalse(currentBoard.isComplete());
+        assertTrue(currentBoard.canProceed());
+
+        while (!currentBoard.availableChoices().isEmpty()) {
+            assertTrue(currentBoard.canProceed());
+            assertFalse(currentBoard.isComplete());
+            currentBoard = currentBoard.choose(currentBoard.availableChoices().iterator().next());
+        }
+
+        assertTrue(currentBoard.isComplete());
+        assertFalse(currentBoard.canProceed());
     }
+
 
 
     @Test

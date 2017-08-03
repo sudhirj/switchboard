@@ -6,7 +6,9 @@ import java.util.List;
 public interface Board<S extends Supply<D>, D extends Demand> {
     Board<S, D> choose(Choice<S, D> choice);
 
-    boolean isFinished();
+    boolean isComplete();
+
+    boolean canProceed();
 
     Collection<Choice<S, D>> availableChoices();
 

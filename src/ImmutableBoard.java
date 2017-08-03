@@ -9,17 +9,17 @@ public class ImmutableBoard<S extends Supply<D>, D extends Demand> implements Bo
     private final ImmutableSet<S> supplies;
     private final ImmutableSet<D> demands;
     private final Table<Supply<D>, D, Choice<Supply<D>, D>> matrix;
-    private final List<Choice<Supply<D>, D>> choices;
+    private final List<Choice<Supply<D>, D>> choicesMade;
 
     ImmutableBoard(Collection<S> supplies, Collection<D> demands) {
         this(supplies, demands, ImmutableList.of());
     }
 
-    private ImmutableBoard(Collection<S> supplies, Collection<D> demands, List<Choice<Supply<D>, D>> choices) {
+    private ImmutableBoard(Collection<S> supplies, Collection<D> demands, List<Choice<Supply<D>, D>> choicesMade) {
         this.supplies = ImmutableSet.copyOf(supplies);
         this.demands = ImmutableSet.copyOf(demands);
         this.matrix = buildMatrix();
-        this.choices = ImmutableList.copyOf(choices);
+        this.choicesMade = ImmutableList.copyOf(choicesMade);
     }
 
     private ImmutableTable<Supply<D>, D, Choice<Supply<D>, D>> buildMatrix() {
@@ -38,30 +38,34 @@ public class ImmutableBoard<S extends Supply<D>, D extends Demand> implements Bo
     @Override
     public Board<Supply<D>, D> choose(Choice<Supply<D>, D> choice) {
         ImmutableList.Builder<Choice<Supply<D>, D>> newChoices = ImmutableList.builder();
-        newChoices.addAll(this.choices);
+        newChoices.addAll(this.choicesMade);
         newChoices.add(choice);
         return new ImmutableBoard<>(this.supplies, this.demands, newChoices.build());
     }
 
     @Override
-    public boolean isFinished() {
-        return false;
+    public boolean isComplete() {
+        return unmetDemands().isEmpty();
+    }
+
+    @Override
+    public boolean canProceed() {
+        return !this.availableChoices().isEmpty();
     }
 
     @Override
     public Collection<Choice<Supply<D>, D>> availableChoices() {
-        return matrix.values();
+        return Sets.difference(ImmutableSet.copyOf(matrix.values()), ImmutableSet.copyOf(this.choicesMade));
     }
 
     @Override
     public Collection<D> unmetDemands() {
-        List<D> metDemands = choices.stream().map(Choice::demand).collect(Collectors.toList());
-        return Sets.filter(demands, demand -> !metDemands.contains(demand));
+        return Sets.difference(demands, choicesMade.stream().map(Choice::demand).collect(Collectors.toSet()));
     }
 
     @Override
     public Table<Supply<D>, D, Choice<Supply<D>, D>> matrix() {
-        return matrix;
+        return ImmutableTable.copyOf(matrix);
     }
 
     @Override
@@ -71,6 +75,6 @@ public class ImmutableBoard<S extends Supply<D>, D extends Demand> implements Bo
 
     @Override
     public List<Choice<Supply<D>, D>> choicesMade() {
-        return this.choices;
+        return ImmutableList.copyOf(this.choicesMade);
     }
 }
