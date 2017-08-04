@@ -60,7 +60,7 @@ public class ImmutableBoard<S extends Supply<D>, D extends Demand> implements Bo
 
     @Override
     public Collection<D> unmetDemands() {
-        return Sets.difference(demands, choicesMade.stream().map(Choice::demand).collect(Collectors.toSet()));
+        return Sets.difference(demands, choicesMade().stream().map(Choice::demand).collect(Collectors.toSet()));
     }
 
     @Override
@@ -80,7 +80,7 @@ public class ImmutableBoard<S extends Supply<D>, D extends Demand> implements Bo
 
     @Override
     public int score() {
-        return choicesMade.stream().mapToInt(Choice::score).sum();
+        return choicesMade().stream().mapToInt(Choice::score).sum();
     }
 
     @Override
