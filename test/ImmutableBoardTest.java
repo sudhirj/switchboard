@@ -45,6 +45,8 @@ public class ImmutableBoardTest {
         Board<Supply<ConstantDemand>, ConstantDemand> currentBoard = board;
         assertFalse(currentBoard.isComplete());
         assertTrue(currentBoard.canProceed());
+        assertEquals(42 * 5, currentBoard.boardScore());
+        assertEquals(0, currentBoard.score());
 
         while (!currentBoard.availableChoices().isEmpty()) {
             assertTrue(currentBoard.canProceed());
@@ -54,6 +56,8 @@ public class ImmutableBoardTest {
 
         assertTrue(currentBoard.isComplete());
         assertFalse(currentBoard.canProceed());
+        assertEquals(0, currentBoard.boardScore());
+        assertEquals(42 * 5, currentBoard.score());
     }
 
     @Test

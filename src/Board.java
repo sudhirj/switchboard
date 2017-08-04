@@ -19,4 +19,8 @@ public interface Board<S extends Supply<D>, D extends Demand> {
     List<Board<S, D>> history();
 
     List<Choice<S, D>> choicesMade();
+
+    int score();
+
+    int boardScore();
 }

@@ -77,4 +77,14 @@ public class ImmutableBoard<S extends Supply<D>, D extends Demand> implements Bo
     public List<Choice<Supply<D>, D>> choicesMade() {
         return ImmutableList.copyOf(this.choicesMade);
     }
+
+    @Override
+    public int score() {
+        return choicesMade.stream().mapToInt(Choice::score).sum();
+    }
+
+    @Override
+    public int boardScore() {
+        return availableChoices().stream().mapToInt(Choice::score).sum();
+    }
 }
