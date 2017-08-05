@@ -19,8 +19,8 @@ public class ImmutableBoardTest {
     @Before
     public void setUp() throws Exception {
         Collection<String> types = Arrays.asList("a", "b", "c", "d", "e");
-        supplies = types.stream().map(ConstantSupply::new).collect(Collectors.toList());
-        demands = types.stream().map(ConstantDemand::new).collect(Collectors.toList());
+        supplies = types.stream().map(ConstantSupply::create).collect(Collectors.toList());
+        demands = types.stream().map(ConstantDemand::create).collect(Collectors.toList());
         board = new ImmutableBoard<>(supplies, demands);
     }
 
@@ -41,7 +41,7 @@ public class ImmutableBoardTest {
     }
 
     @Test
-    public void completeness() throws Exception {
+    public void completenessAndScoring() throws Exception {
         Board<Supply<ConstantDemand>, ConstantDemand> currentBoard = board;
         assertFalse(currentBoard.isComplete());
         assertTrue(currentBoard.canProceed());
@@ -71,14 +71,14 @@ public class ImmutableBoardTest {
 
     @Test
     public void matrix() throws Exception {
-        assertNull(board.matrix().get(new ConstantSupply("a"), new ConstantDemand("b")));
-        assertNull(board.matrix().get(new ConstantSupply("a"), new ConstantDemand("d")));
-        assertEquals(42, board.matrix().get(new ConstantSupply("a"), new ConstantDemand("a")).score());
-        assertEquals(42, board.matrix().get(new ConstantSupply("b"), new ConstantDemand("b")).score());
+        assertNull(board.matrix().get(ConstantSupply.create("a"), ConstantDemand.create("b")));
+        assertNull(board.matrix().get(ConstantSupply.create("a"), ConstantDemand.create("d")));
+        assertEquals(42, board.matrix().get(ConstantSupply.create("a"), ConstantDemand.create("a")).score());
+        assertEquals(42, board.matrix().get(ConstantSupply.create("b"), ConstantDemand.create("b")).score());
     }
 
     @Test
-    public void previousMatrices() throws Exception {
+    public void history() throws Exception {
     }
 
     @After

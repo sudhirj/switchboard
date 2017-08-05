@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="com.google.auto.value:auto-value:1.2" type="repository">
+    <properties maven-id="com.google.auto.value:auto-value:1.2" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/auto-value-1.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

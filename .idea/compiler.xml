@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <option name="DEFAULT_COMPILER" value="error-prone" />
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true">
+        <sourceOutputDir name="src/generated" />
+        <sourceTestOutputDir name="test/generated" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath>
+          <entry name="$PROJECT_DIR$/lib/auto-value-1.2.jar" />
+        </processorPath>
+      </profile>
+    </annotationProcessing>
+  </component>
+</project>

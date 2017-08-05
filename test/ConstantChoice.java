@@ -1,47 +1,18 @@
-public class ConstantChoice<S extends Supply<D>, D extends Demand> implements Choice<Supply<D>, D> {
-    private final S supply;
-    private final D demand;
+import com.google.auto.value.AutoValue;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ConstantChoice)) return false;
+@AutoValue
+abstract class ConstantChoice<S extends Supply<D>, D extends Demand> implements Choice<S, D> {
 
-        ConstantChoice<?, ?> that = (ConstantChoice<?, ?>) o;
-
-        if (score != that.score) return false;
-        return supply.equals(that.supply) && demand.equals(that.demand);
+    static <S extends Supply<D>, D extends Demand> ConstantChoice<S, D> create(S supply, D demand, int score) {
+        return new AutoValue_ConstantChoice<>(supply, demand, score);
     }
 
     @Override
-    public int hashCode() {
-        int result = supply.hashCode();
-        result = 31 * result + demand.hashCode();
-        result = 31 * result + score;
-        return result;
-    }
-
-    private final int score;
-
-    ConstantChoice(S supply, D demand, int score) {
-        this.supply = supply;
-        this.demand = demand;
-        this.score = score;
-    }
+    abstract public S supply();
 
     @Override
-    public int score() {
-        return this.score;
-    }
+    abstract public D demand();
 
     @Override
-    public S supply() {
-        return this.supply;
-    }
-
-    @Override
-    public D demand() {
-        return this.demand;
-    }
-
+    abstract public int score();
 }

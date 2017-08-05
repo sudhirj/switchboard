@@ -1,29 +1,11 @@
-class ConstantDemand implements Demand {
-    final String type;
+import com.google.auto.value.AutoValue;
 
-    ConstantDemand(String type) {
-        this.type = type;
+@AutoValue
+abstract class ConstantDemand implements Demand {
+    static ConstantDemand create(String type) {
+        return new AutoValue_ConstantDemand(type);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ConstantDemand)) return false;
+    abstract String type();
 
-        ConstantDemand that = (ConstantDemand) o;
-
-        return type.equals(that.type);
-    }
-
-    @Override
-    public String toString() {
-        return "ConstantDemand{" +
-                "type='" + type + '\'' +
-                '}';
-    }
-
-    @Override
-    public int hashCode() {
-        return type.hashCode();
-    }
 }
