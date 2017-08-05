@@ -18,8 +18,8 @@ public class ImmutableBoard<S extends Supply<D>, D extends Demand> implements Bo
     private ImmutableBoard(Collection<S> supplies, Collection<D> demands, List<Choice<Supply<D>, D>> choicesMade) {
         this.supplies = ImmutableSet.copyOf(supplies);
         this.demands = ImmutableSet.copyOf(demands);
-        this.matrix = buildMatrix();
         this.choicesMade = ImmutableList.copyOf(choicesMade);
+        this.matrix = buildMatrix();
     }
 
     private ImmutableTable<Supply<D>, D, Choice<Supply<D>, D>> buildMatrix() {
@@ -38,9 +38,9 @@ public class ImmutableBoard<S extends Supply<D>, D extends Demand> implements Bo
     @Override
     public Board<Supply<D>, D> choose(Choice<Supply<D>, D> choice) {
         ImmutableList.Builder<Choice<Supply<D>, D>> newChoices = ImmutableList.builder();
-        newChoices.addAll(this.choicesMade);
+        newChoices.addAll(choicesMade());
         newChoices.add(choice);
-        return new ImmutableBoard<>(this.supplies, this.demands, newChoices.build());
+        return new ImmutableBoard<>(supplies, demands, newChoices.build());
     }
 
     @Override
@@ -50,12 +50,12 @@ public class ImmutableBoard<S extends Supply<D>, D extends Demand> implements Bo
 
     @Override
     public boolean canProceed() {
-        return !this.availableChoices().isEmpty();
+        return !availableChoices().isEmpty();
     }
 
     @Override
     public Collection<Choice<Supply<D>, D>> availableChoices() {
-        return Sets.difference(ImmutableSet.copyOf(matrix.values()), ImmutableSet.copyOf(this.choicesMade));
+        return Sets.difference(ImmutableSet.copyOf(matrix.values()), ImmutableSet.copyOf(choicesMade()));
     }
 
     @Override
@@ -75,7 +75,7 @@ public class ImmutableBoard<S extends Supply<D>, D extends Demand> implements Bo
 
     @Override
     public List<Choice<Supply<D>, D>> choicesMade() {
-        return ImmutableList.copyOf(this.choicesMade);
+        return ImmutableList.copyOf(choicesMade);
     }
 
     @Override

@@ -1,6 +1,6 @@
 import com.google.auto.value.AutoValue;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 @AutoValue
@@ -11,7 +11,7 @@ abstract class ConstantSupply implements Supply<ConstantDemand> {
     }
 
     @Override
-    public Choice<Supply<ConstantDemand>, ConstantDemand> estimateFor(ConstantDemand demand, Collection<ConstantDemand> commitments) {
+    public Choice<Supply<ConstantDemand>, ConstantDemand> estimateFor(ConstantDemand demand, List<ConstantDemand> commitments) {
         if (Objects.equals(type(), demand.type())) {
             return ConstantChoice.create(this, demand, 42);
         }
