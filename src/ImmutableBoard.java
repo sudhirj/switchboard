@@ -39,13 +39,7 @@ public class ImmutableBoard<S extends Supply<D>, D extends Demand> implements Bo
 
     @Override
     public Board<Supply<D>, D> choose(Choice<Supply<D>, D> choice) {
-        ImmutableList.Builder<Choice<Supply<D>, D>> newChoices = ImmutableList.builder();
-        newChoices.addAll(choicesMade());
-        newChoices.add(choice);
-        ImmutableList.Builder<Board<Supply<D>, D>> newHistory = ImmutableList.builder();
-        newHistory.addAll(history());
-        newHistory.add(this);
-        return new ImmutableBoard<>(supplies, demands, newChoices.build(), newHistory.build());
+        return new ImmutableBoard<>(supplies, demands, append(choicesMade(), choice), append(history(), this));
     }
 
     @Override
@@ -91,6 +85,14 @@ public class ImmutableBoard<S extends Supply<D>, D extends Demand> implements Bo
     @Override
     public int boardScore() {
         return availableChoices().parallelStream().mapToInt(Choice::score).sum();
+    }
+
+
+    private <T> ImmutableList<T> append(List<T> items, T item) {
+        ImmutableList.Builder<T> builder = ImmutableList.builder();
+        builder.addAll(items);
+        builder.add(item);
+        return builder.build();
     }
 
     @Override

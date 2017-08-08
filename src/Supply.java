@@ -2,7 +2,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 enum RecheckStrategy {
-    ALWAYS, NEVER, AFTER_USAGE
+    NEVER, ON_COMMITTMENT
 }
 
 public interface Supply<D extends Demand> {
