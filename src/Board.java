@@ -12,7 +12,7 @@ public interface Board<S extends Supply<D>, D extends Demand> {
 
     Collection<Choice<S, D>> availableChoices();
 
-    Collection<D> unmetDemands();
+    Collection<D> pendingDemands();
 
     Table<S, D, Choice<S, D>> matrix();
 
