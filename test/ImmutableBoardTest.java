@@ -79,6 +79,11 @@ public class ImmutableBoardTest {
 
     @Test
     public void history() throws Exception {
+        Board<Supply<ConstantDemand>, ConstantDemand> firstBoard = board;
+        Board<Supply<ConstantDemand>, ConstantDemand> secondBoard = firstBoard.choose(firstBoard.availableChoices().iterator().next());
+        assertEquals(ImmutableList.of(firstBoard), ImmutableList.copyOf(secondBoard.history()));
+        Board<Supply<ConstantDemand>, ConstantDemand> thirdBoard = secondBoard.choose(secondBoard.availableChoices().iterator().next());
+        assertEquals(ImmutableList.of(firstBoard, secondBoard), ImmutableList.copyOf(thirdBoard.history()));
     }
 
     @After
