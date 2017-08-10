@@ -1,10 +1,12 @@
+package io.sudhir.switchboard;
+
 import java.util.List;
 
 enum RecheckStrategy {
     NEVER, ON_COMMITTMENT
 }
 
-interface Supply {
+public interface Supply {
 
     Choice estimateFor(Demand demand, List<Choice> commitments);
 

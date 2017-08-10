@@ -1,3 +1,5 @@
+package io.sudhir.switchboard;
+
 import com.google.common.collect.Table;
 
 import java.util.Collection;

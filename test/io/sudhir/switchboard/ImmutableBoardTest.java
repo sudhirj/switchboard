@@ -1,5 +1,8 @@
+package io.sudhir.switchboard;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import io.sudhir.switchboard.boards.ImmutableBoard;
 import org.junit.Before;
 import org.junit.Test;
 

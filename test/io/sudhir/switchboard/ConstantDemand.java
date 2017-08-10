@@ -1,3 +1,5 @@
+package io.sudhir.switchboard;
+
 import com.google.auto.value.AutoValue;
 
 @AutoValue

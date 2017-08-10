@@ -1,4 +1,9 @@
+package io.sudhir.switchboard.boards;
 import com.google.common.collect.*;
+import io.sudhir.switchboard.Board;
+import io.sudhir.switchboard.Choice;
+import io.sudhir.switchboard.Demand;
+import io.sudhir.switchboard.Supply;
 
 import java.util.Collection;
 import java.util.List;
@@ -12,7 +17,7 @@ public class ImmutableBoard implements Board {
     private final ImmutableList<Choice> choicesMade;
     private final ImmutableList<Board> history;
 
-    ImmutableBoard(Collection<Supply> supplies, Collection<Demand> demands) {
+    public ImmutableBoard(Collection<Supply> supplies, Collection<Demand> demands) {
         this(supplies, demands, ImmutableList.of(), ImmutableList.of());
     }
 
@@ -28,7 +33,7 @@ public class ImmutableBoard implements Board {
         ImmutableTable.Builder<Supply, Demand, Choice> builder = ImmutableTable.builder();
         for (Supply supply : supplies) {
             for (Demand demand : demands) {
-                Choice estimate = supply.estimateFor(demand, choicesMade().stream().filter(c -> c.supply().equals(supply)).collect(Collectors.toList()));
+                Choice estimate = supply.estimateFor(demand, choicesMade().parallelStream().filter(c -> c.supply().equals(supply)).collect(Collectors.toList()));
                 if (estimate != null) {
                     builder.put(supply, demand, estimate);
                 }
