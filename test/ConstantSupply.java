@@ -1,20 +1,19 @@
 import com.google.auto.value.AutoValue;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
 
 @AutoValue
-abstract class ConstantSupply implements Supply<ConstantDemand> {
+abstract class ConstantSupply implements Supply {
     static ConstantSupply create(String type) {
         return new AutoValue_ConstantSupply(type);
     }
 
-    @Nullable
     @Override
-    public Choice<Supply<ConstantDemand>, ConstantDemand> estimateFor(ConstantDemand demand, List<Choice<Supply<ConstantDemand>, ConstantDemand>> commitments) {
-        if (Objects.equals(type(), demand.type())) {
-            return ConstantChoice.create(this, demand, 42);
+    public Choice estimateFor(Demand demand, List<Choice> commitments) {
+        ConstantDemand constantDemand = (ConstantDemand) demand;
+        if (Objects.equals(type(), constantDemand.type())) {
+            return Choice.create(this, demand, 42);
         }
         return null;
     }

@@ -1,2 +1,2 @@
-interface Demand {
+public interface Demand {
 }

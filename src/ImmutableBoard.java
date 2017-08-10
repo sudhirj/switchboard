@@ -4,19 +4,19 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ImmutableBoard<S extends Supply<D>, D extends Demand> implements Board<Supply<D>, D> {
+public class ImmutableBoard implements Board {
 
-    private final ImmutableSet<S> supplies;
-    private final ImmutableSet<D> demands;
-    private final ImmutableTable<Supply<D>, D, Choice<Supply<D>, D>> matrix;
-    private final ImmutableList<Choice<Supply<D>, D>> choicesMade;
-    private final ImmutableList<Board<Supply<D>, D>> history;
+    private final ImmutableSet<Supply> supplies;
+    private final ImmutableSet<Demand> demands;
+    private final ImmutableTable<Supply, Demand, Choice> matrix;
+    private final ImmutableList<Choice> choicesMade;
+    private final ImmutableList<Board> history;
 
-    ImmutableBoard(Collection<S> supplies, Collection<D> demands) {
+    ImmutableBoard(Collection<Supply> supplies, Collection<Demand> demands) {
         this(supplies, demands, ImmutableList.of(), ImmutableList.of());
     }
 
-    private ImmutableBoard(Collection<S> supplies, Collection<D> demands, List<Choice<Supply<D>, D>> choicesMade, List<Board<Supply<D>, D>> history) {
+    private ImmutableBoard(Collection<Supply> supplies, Collection<Demand> demands, List<Choice> choicesMade, List<Board> history) {
         this.supplies = ImmutableSet.copyOf(supplies);
         this.demands = ImmutableSet.copyOf(demands);
         this.choicesMade = ImmutableList.copyOf(choicesMade);
@@ -24,11 +24,11 @@ public class ImmutableBoard<S extends Supply<D>, D extends Demand> implements Bo
         this.matrix = buildMatrix();
     }
 
-    private ImmutableTable<Supply<D>, D, Choice<Supply<D>, D>> buildMatrix() {
-        ImmutableTable.Builder<Supply<D>, D, Choice<Supply<D>, D>> builder = ImmutableTable.builder();
-        for (S supply : supplies) {
-            for (D demand : demands) {
-                Choice<Supply<D>, D> estimate = supply.estimateFor(demand, choicesMade().stream().filter(c -> c.supply().equals(supply)).collect(Collectors.toList()));
+    private ImmutableTable<Supply, Demand, Choice> buildMatrix() {
+        ImmutableTable.Builder<Supply, Demand, Choice> builder = ImmutableTable.builder();
+        for (Supply supply : supplies) {
+            for (Demand demand : demands) {
+                Choice estimate = supply.estimateFor(demand, choicesMade().stream().filter(c -> c.supply().equals(supply)).collect(Collectors.toList()));
                 if (estimate != null) {
                     builder.put(supply, demand, estimate);
                 }
@@ -38,8 +38,8 @@ public class ImmutableBoard<S extends Supply<D>, D extends Demand> implements Bo
     }
 
     @Override
-    public Board<Supply<D>, D> choose(Choice<Supply<D>, D> choice) {
-        return new ImmutableBoard<>(supplies, demands, append(choicesMade(), choice), append(history(), this));
+    public Board choose(Choice choice) {
+        return new ImmutableBoard(supplies, demands, append(choicesMade(), choice), append(history(), this));
     }
 
     @Override
@@ -53,27 +53,27 @@ public class ImmutableBoard<S extends Supply<D>, D extends Demand> implements Bo
     }
 
     @Override
-    public Collection<Choice<Supply<D>, D>> availableChoices() {
+    public Collection<Choice> availableChoices() {
         return Sets.difference(ImmutableSet.copyOf(matrix.values()), ImmutableSet.copyOf(choicesMade()));
     }
 
     @Override
-    public Collection<D> pendingDemands() {
+    public Collection<Demand> pendingDemands() {
         return Sets.difference(demands, choicesMade().parallelStream().map(Choice::demand).collect(Collectors.toSet()));
     }
 
     @Override
-    public Table<Supply<D>, D, Choice<Supply<D>, D>> matrix() {
+    public Table<Supply, Demand, Choice> matrix() {
         return ImmutableTable.copyOf(matrix);
     }
 
     @Override
-    public List<Board<Supply<D>, D>> history() {
+    public List<Board> history() {
         return ImmutableList.copyOf(history);
     }
 
     @Override
-    public List<Choice<Supply<D>, D>> choicesMade() {
+    public List<Choice> choicesMade() {
         return ImmutableList.copyOf(choicesMade);
     }
 
@@ -100,9 +100,13 @@ public class ImmutableBoard<S extends Supply<D>, D extends Demand> implements Bo
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ImmutableBoard<?, ?> that = (ImmutableBoard<?, ?>) o;
+        ImmutableBoard that = (ImmutableBoard) o;
 
-        return supplies.equals(that.supplies) && demands.equals(that.demands) && matrix.equals(that.matrix) && choicesMade.equals(that.choicesMade) && history.equals(that.history);
+        if (!supplies.equals(that.supplies)) return false;
+        if (!demands.equals(that.demands)) return false;
+        if (!matrix.equals(that.matrix)) return false;
+        if (!choicesMade.equals(that.choicesMade)) return false;
+        return history.equals(that.history);
     }
 
     @Override

@@ -1,7 +1,15 @@
-public interface Choice<S extends Supply<D>, D extends Demand> {
-    int score();
+import com.google.auto.value.AutoValue;
 
-    S supply();
+@AutoValue
+public abstract class Choice {
 
-    D demand();
+    static Choice create(Supply supply, Demand demand, int score) {
+        return new AutoValue_Choice(supply, demand, score);
+    }
+
+    public abstract Supply supply();
+
+    public abstract Demand demand();
+
+    public abstract int score();
 }

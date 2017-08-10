@@ -3,22 +3,22 @@ import com.google.common.collect.Table;
 import java.util.Collection;
 import java.util.List;
 
-public interface Board<S extends Supply<D>, D extends Demand> {
-    Board<S, D> choose(Choice<S, D> choice);
+public interface Board {
+    Board choose(Choice choice);
 
     boolean isComplete();
 
     boolean canProceed();
 
-    Collection<Choice<S, D>> availableChoices();
+    Collection<Choice> availableChoices();
 
-    Collection<D> pendingDemands();
+    Collection<Demand> pendingDemands();
 
-    Table<S, D, Choice<S, D>> matrix();
+    Table<Supply, Demand, Choice> matrix();
 
-    List<Board<S, D>> history();
+    List<Board> history();
 
-    List<Choice<S, D>> choicesMade();
+    List<Choice> choicesMade();
 
     int score();
 
