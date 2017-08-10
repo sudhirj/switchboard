@@ -3,6 +3,7 @@ package io.sudhir.switchboard;
 import com.google.common.collect.ImmutableSet;
 import io.sudhir.switchboard.boards.ImmutableBoard;
 import io.sudhir.switchboard.games.SinglePlayerSequentialGame;
+import io.sudhir.switchboard.players.GreedyPlayer;
 import io.sudhir.switchboard.players.RandomPlayer;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,15 +33,15 @@ public class GameTest {
     @Test
     public void simpleRandomGame() {
         Collection<Player> players = ImmutableSet.of(
-                new RandomPlayer()
-//                new GreedyPlayer()
+                new RandomPlayer(),
+                new GreedyPlayer(Goals.MINIMIZE)
         );
         for (Player player : players) {
             Game game = new SinglePlayerSequentialGame(board, player);
             Board finishedBoard = game.run(board);
             assertTrue(finishedBoard.isComplete());
             assertEquals(5, finishedBoard.choicesMade().size());
+            assertEquals(42 * 5, finishedBoard.score());
         }
-
     }
 }

@@ -1,4 +1,5 @@
 package io.sudhir.switchboard;
+
 import com.google.auto.value.AutoValue;
 
 import java.util.List;
