@@ -15,16 +15,18 @@ abstract class ConstantSupply implements Supply {
     public Choice estimateFor(Demand demand, List<Choice> commitments) {
         // Avoiding the casts on supply nodes for their companion demand nodes is far more trouble than it's worth.
         // https://blogs.msdn.microsoft.com/ericlippert/2011/02/03/curiouser-and-curiouser/
-        ConstantDemand constantDemand = (ConstantDemand) demand;
-        if (Objects.equals(type(), constantDemand.type())) {
-            return Choice.create(this, demand, 42);
+        if (demand instanceof ConstantDemand) {
+            ConstantDemand constantDemand = (ConstantDemand) demand;
+            if (Objects.equals(type(), constantDemand.type())) {
+                return Choice.create(this, demand, 42);
+            }
         }
         return null;
     }
 
     @Override
     public RecheckStrategy recheckStrategy() {
-        return null;
+        return RecheckStrategy.NEVER;
     }
 
     abstract String type();
