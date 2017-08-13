@@ -36,5 +36,13 @@ public class GameTest {
         }
     }
 
+    @Test
+    public void benchmarkRunningOnRandomBoard() {
+        Board board = TestBoards.RANDOM.board();
+        for (Player player : players) {
+            Game game = new SinglePlayerSequentialGame(player);
+            game.run(board, Goals.MINIMIZE);
+        }
+    }
 }
 

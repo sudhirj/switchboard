@@ -1,12 +1,12 @@
 package io.sudhir.switchboard.boards;
+
 import com.google.common.collect.*;
-import io.sudhir.switchboard.Board;
-import io.sudhir.switchboard.Choice;
-import io.sudhir.switchboard.Demand;
-import io.sudhir.switchboard.Supply;
+import io.sudhir.switchboard.*;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ImmutableBoard implements Board {
@@ -16,13 +16,15 @@ public class ImmutableBoard implements Board {
     private final ImmutableTable<Supply, Demand, Choice> matrix;
     private final ImmutableList<Choice> choicesMade;
     private final ImmutableList<Board> history;
+    private final ImmutableSet<Supply> alwaysMutableSupplies;
 
     public ImmutableBoard(Collection<Supply> supplies, Collection<Demand> demands) {
-        this(supplies, demands, ImmutableList.of(), ImmutableList.of());
+        this(supplies, demands, ImmutableList.of(), ImmutableList.of(), supplies.parallelStream().filter(s -> s.recheckStrategy() == RecheckStrategy.ALWAYS).collect(Collectors.toSet()));
     }
 
-    private ImmutableBoard(Collection<Supply> supplies, Collection<Demand> demands, List<Choice> choicesMade, List<Board> history) {
+    private ImmutableBoard(Collection<Supply> supplies, Collection<Demand> demands, List<Choice> choicesMade, List<Board> history, Collection<Supply> alwaysMutableSupplies) {
         this.supplies = ImmutableSet.copyOf(supplies);
+        this.alwaysMutableSupplies = ImmutableSet.copyOf(alwaysMutableSupplies);
         this.demands = ImmutableSet.copyOf(demands);
         this.choicesMade = ImmutableList.copyOf(choicesMade);
         this.history = ImmutableList.copyOf(history);
@@ -30,21 +32,43 @@ public class ImmutableBoard implements Board {
     }
 
     private ImmutableTable<Supply, Demand, Choice> buildMatrix() {
-        ImmutableTable.Builder<Supply, Demand, Choice> builder = ImmutableTable.builder();
-        for (Supply supply : supplies) {
-            for (Demand demand : demands) {
-                Choice estimate = supply.estimateFor(demand, choicesMade().parallelStream().filter(c -> c.supply().equals(supply)).collect(Collectors.toList()));
+
+        Set<Supply> suppliesToCompute = new HashSet<>(history().size() > 0 ? alwaysMutableSupplies : supplies);
+
+        if (choicesMade().size() > 0) {
+            Supply lastCommittedSupply = choicesMade().get(choicesMade().size() - 1).supply();
+            if (lastCommittedSupply.recheckStrategy() == RecheckStrategy.ON_COMMITMENT) {
+                suppliesToCompute.add(lastCommittedSupply);
+            }
+        }
+
+        long start = System.currentTimeMillis();
+        HashBasedTable<Supply, Demand, Choice> temporaryTable = startingTable();
+        Set<Demand> metDemands = choicesMade.parallelStream().map(Choice::demand).collect(Collectors.toSet());
+        Set<Demand> unmetDemands = Sets.difference(demands, metDemands);
+        for (Supply supply : suppliesToCompute) {
+            List<Choice> relevantChoices = choicesMade().parallelStream().filter(c -> c.supply().equals(supply)).collect(Collectors.toList());
+            for (Demand demand : unmetDemands) {
+                Choice estimate = supply.estimateFor(demand, relevantChoices);
                 if (estimate != null) {
-                    builder.put(supply, demand, estimate);
+                    temporaryTable.put(supply, demand, estimate);
                 }
             }
         }
-        return builder.build();
+        System.out.println("Matrix build in " + (System.currentTimeMillis() - start));
+        return ImmutableTable.copyOf(temporaryTable);
+    }
+
+    private HashBasedTable<Supply, Demand, Choice> startingTable() {
+        if (history().size() > 0) {
+            return HashBasedTable.create(history().get(history().size() - 1).matrix());
+        }
+        return HashBasedTable.create();
     }
 
     @Override
     public Board choose(Choice choice) {
-        return new ImmutableBoard(supplies, demands, append(choicesMade(), choice), append(history(), this));
+        return new ImmutableBoard(supplies, demands, append(choicesMade(), choice), append(history(), this), alwaysMutableSupplies);
     }
 
     @Override

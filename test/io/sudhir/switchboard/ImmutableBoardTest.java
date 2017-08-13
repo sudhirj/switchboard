@@ -92,7 +92,7 @@ public class ImmutableBoardTest {
 
             @Override
             public RecheckStrategy recheckStrategy() {
-                return null;
+                return RecheckStrategy.ALWAYS;
             }
         };
         List<Demand> demands = ImmutableList.of(ConstantDemand.create("a"), ConstantDemand.create("b"), ConstantDemand.create("c"));
@@ -101,7 +101,7 @@ public class ImmutableBoardTest {
         assertTrue(recordedCommitments.get(0).isEmpty());
         Choice choice = recordingBoard.availableChoices().iterator().next();
         recordingBoard.choose(choice);
-        assertEquals(6, recordedCommitments.size());
+        assertEquals(5, recordedCommitments.size());
         assertEquals(1, recordedCommitments.get(3).size());
         assertEquals(choice, recordedCommitments.get(3).get(0));
     }
