@@ -4,7 +4,7 @@ import com.google.auto.value.AutoValue;
 @AutoValue
 public abstract class Choice {
 
-    static Choice create(Supply supply, Demand demand, int score) {
+    public static Choice create(Supply supply, Demand demand, int score) {
         return new AutoValue_Choice(supply, demand, score);
     }
 
