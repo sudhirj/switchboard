@@ -24,12 +24,10 @@ public enum TestBoards {
             case RANDOM:
                 supplies = new ArrayList<>();
                 demands = new ArrayList<>();
-                System.out.println("Starting random board generation");
                 for (Integer i = 1; i < 100; i++) {
                     supplies.add(ConstantSupply.create(i.toString()));
                     demands.add(ConstantDemand.create(i.toString()));
                 }
-                System.out.println("Finished random board generation");
                 break;
 
             default:

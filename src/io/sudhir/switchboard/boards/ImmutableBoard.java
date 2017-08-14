@@ -7,7 +7,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 
 public class ImmutableBoard implements Board {
 
@@ -19,7 +21,7 @@ public class ImmutableBoard implements Board {
     private final ImmutableSet<Supply> alwaysMutableSupplies;
 
     public ImmutableBoard(Collection<Supply> supplies, Collection<Demand> demands) {
-        this(supplies, demands, ImmutableList.of(), ImmutableList.of(), supplies.parallelStream().filter(s -> s.recheckStrategy() == RecheckStrategy.ALWAYS).collect(Collectors.toSet()));
+        this(supplies, demands, ImmutableList.of(), ImmutableList.of(), supplies.parallelStream().filter(s -> s.recheckStrategy() == RecheckStrategy.ALWAYS).collect(toSet()));
     }
 
     private ImmutableBoard(Collection<Supply> supplies, Collection<Demand> demands, List<Choice> choicesMade, List<Board> history, Collection<Supply> alwaysMutableSupplies) {
@@ -43,10 +45,10 @@ public class ImmutableBoard implements Board {
         }
 
         HashBasedTable<Supply, Demand, Choice> temporaryTable = startingTable();
-        Set<Demand> metDemands = choicesMade.parallelStream().map(Choice::demand).collect(Collectors.toSet());
+        Set<Demand> metDemands = choicesMade.parallelStream().map(Choice::demand).collect(toSet());
         Set<Demand> unmetDemands = Sets.difference(demands, metDemands);
         for (Supply supply : suppliesToCompute) {
-            List<Choice> relevantChoices = choicesMade().parallelStream().filter(c -> c.supply().equals(supply)).collect(Collectors.toList());
+            List<Choice> relevantChoices = choicesMade().parallelStream().filter(c -> c.supply().equals(supply)).collect(toList());
             for (Demand demand : unmetDemands) {
                 Choice estimate = supply.estimateFor(demand, relevantChoices);
                 if (estimate != null) {
@@ -86,7 +88,7 @@ public class ImmutableBoard implements Board {
 
     @Override
     public Collection<Demand> pendingDemands() {
-        return Sets.difference(demands, choicesMade().parallelStream().map(Choice::demand).collect(Collectors.toSet()));
+        return Sets.difference(demands, choicesMade().parallelStream().map(Choice::demand).collect(toSet()));
     }
 
     @Override
