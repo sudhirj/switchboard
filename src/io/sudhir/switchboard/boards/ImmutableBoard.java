@@ -36,13 +36,12 @@ public class ImmutableBoard implements Board {
         Set<Supply> suppliesToCompute = new HashSet<>(history().size() > 0 ? alwaysMutableSupplies : supplies);
 
         if (choicesMade().size() > 0) {
-            Supply lastCommittedSupply = choicesMade().get(choicesMade().size() - 1).supply();
+            Supply lastCommittedSupply = Iterables.getLast(choicesMade()).supply();
             if (lastCommittedSupply.recheckStrategy() == RecheckStrategy.ON_COMMITMENT) {
                 suppliesToCompute.add(lastCommittedSupply);
             }
         }
 
-        long start = System.currentTimeMillis();
         HashBasedTable<Supply, Demand, Choice> temporaryTable = startingTable();
         Set<Demand> metDemands = choicesMade.parallelStream().map(Choice::demand).collect(Collectors.toSet());
         Set<Demand> unmetDemands = Sets.difference(demands, metDemands);
@@ -55,13 +54,12 @@ public class ImmutableBoard implements Board {
                 }
             }
         }
-        System.out.println("Matrix build in " + (System.currentTimeMillis() - start));
         return ImmutableTable.copyOf(temporaryTable);
     }
 
     private HashBasedTable<Supply, Demand, Choice> startingTable() {
         if (history().size() > 0) {
-            return HashBasedTable.create(history().get(history().size() - 1).matrix());
+            return HashBasedTable.create(Iterables.getLast(history()).matrix());
         }
         return HashBasedTable.create();
     }
