@@ -45,7 +45,7 @@ public class ImmutableBoard implements Board {
         }
 
         HashBasedTable<Supply, Demand, Choice> temporaryTable = startingTable();
-        Set<Demand> metDemands = choicesMade.parallelStream().map(Choice::demand).collect(toSet());
+        Set<Demand> metDemands = choicesMade().parallelStream().map(Choice::demand).collect(toSet());
         Set<Demand> unmetDemands = Sets.difference(demands, metDemands);
         for (Supply supply : suppliesToCompute) {
             List<Choice> relevantChoices = choicesMade().parallelStream().filter(c -> c.supply().equals(supply)).collect(toList());
@@ -55,6 +55,9 @@ public class ImmutableBoard implements Board {
                     temporaryTable.put(supply, demand, estimate);
                 }
             }
+        }
+        for (Choice choice : choicesMade()) {
+            temporaryTable.remove(choice.supply(), choice.demand());
         }
         return ImmutableTable.copyOf(temporaryTable);
     }

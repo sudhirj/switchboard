@@ -6,4 +6,6 @@ public interface Goal {
     Comparator<Board> boardComparator();
 
     Comparator<Choice> choiceComparator();
+
+    Comparator<Integer> comparator();
 }

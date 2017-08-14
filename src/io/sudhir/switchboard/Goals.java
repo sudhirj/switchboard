@@ -23,5 +23,10 @@ public enum Goals implements Goal {
         return Comparator.comparingInt(choice -> transformer.apply(choice.score()));
     }
 
+    @Override
+    public Comparator<Integer> comparator() {
+        return Comparator.comparingInt(transformer::apply);
+    }
+
 
 }

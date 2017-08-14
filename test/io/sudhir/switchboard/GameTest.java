@@ -3,6 +3,7 @@ package io.sudhir.switchboard;
 import com.google.common.collect.ImmutableSet;
 import io.sudhir.switchboard.games.SinglePlayerSequentialGame;
 import io.sudhir.switchboard.players.GreedyPlayer;
+import io.sudhir.switchboard.players.OptimisticPlayer;
 import io.sudhir.switchboard.players.RandomPlayer;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +21,8 @@ public class GameTest {
     public void setUp() throws Exception {
         players = ImmutableSet.of(
                 new RandomPlayer(),
-                new GreedyPlayer()
+                new GreedyPlayer(),
+                new OptimisticPlayer()
         );
     }
 
