@@ -21,7 +21,15 @@ public class ImmutableBoard implements Board {
     private final ImmutableSet<Supply> alwaysMutableSupplies;
 
     public ImmutableBoard(Collection<Supply> supplies, Collection<Demand> demands) {
-        this(supplies, demands, ImmutableList.of(), ImmutableList.of(), supplies.parallelStream().filter(s -> s.recheckStrategy() == RecheckStrategy.ALWAYS).collect(toSet()));
+        this(
+                supplies,
+                demands,
+                ImmutableList.of(),
+                ImmutableList.of(),
+                supplies.parallelStream()
+                        .filter(s -> s.recheckStrategy() == RecheckStrategy.ALWAYS)
+                        .collect(toSet())
+        );
     }
 
     private ImmutableBoard(Collection<Supply> supplies, Collection<Demand> demands, List<Choice> choicesMade, List<Board> history, Collection<Supply> alwaysMutableSupplies) {
@@ -34,23 +42,11 @@ public class ImmutableBoard implements Board {
     }
 
     private ImmutableTable<Supply, Demand, Choice> buildMatrix() {
-
-        Set<Supply> suppliesToCompute = new HashSet<>(history().size() > 0 ? alwaysMutableSupplies : supplies);
-
-        if (choicesMade().size() > 0) {
-            Supply lastCommittedSupply = Iterables.getLast(choicesMade()).supply();
-            if (lastCommittedSupply.recheckStrategy() == RecheckStrategy.ON_COMMITMENT) {
-                suppliesToCompute.add(lastCommittedSupply);
-            }
-        }
-
         HashBasedTable<Supply, Demand, Choice> temporaryTable = startingTable();
-        Set<Demand> metDemands = choicesMade().parallelStream().map(Choice::demand).collect(toSet());
-        Set<Demand> unmetDemands = Sets.difference(demands, metDemands);
-        for (Supply supply : suppliesToCompute) {
-            List<Choice> relevantChoices = choicesMade().parallelStream().filter(c -> c.supply().equals(supply)).collect(toList());
-            for (Demand demand : unmetDemands) {
-                Choice estimate = supply.estimateFor(demand, relevantChoices);
+        for (Supply supply : suppliesToRecompute()) {
+            List<Choice> committedChoices = choicesMade().parallelStream().filter(c -> c.supply().equals(supply)).collect(toList());
+            for (Demand demand : pendingDemands()) {
+                Choice estimate = supply.estimateFor(demand, committedChoices);
                 if (estimate != null) {
                     temporaryTable.put(supply, demand, estimate);
                 }
@@ -60,6 +56,17 @@ public class ImmutableBoard implements Board {
             temporaryTable.remove(choice.supply(), choice.demand());
         }
         return ImmutableTable.copyOf(temporaryTable);
+    }
+
+    private Set<Supply> suppliesToRecompute() {
+        Set<Supply> suppliesToRecompute = new HashSet<>(history().size() > 0 ? alwaysMutableSupplies : supplies);
+        if (choicesMade().size() > 0) {
+            Supply lastCommittedSupply = Iterables.getLast(choicesMade()).supply();
+            if (lastCommittedSupply.recheckStrategy() == RecheckStrategy.ON_COMMITMENT) {
+                suppliesToRecompute.add(lastCommittedSupply);
+            }
+        }
+        return suppliesToRecompute;
     }
 
     private HashBasedTable<Supply, Demand, Choice> startingTable() {
