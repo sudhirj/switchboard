@@ -14,28 +14,8 @@ import static org.junit.Assert.assertEquals;
 public class PlayerTest {
     @Test
     public void bestChoiceFor() throws Exception {
-        Supply constantSupply = new Supply() {
-            @Override
-            public Choice estimateFor(Demand demand, List<Choice> commitments) {
-                return Choice.create(this, demand, 42);
-            }
-
-            @Override
-            public RecheckStrategy recheckStrategy() {
-                return RecheckStrategy.ON_COMMITMENT;
-            }
-        };
-        Supply optimizingSupply = new Supply() {
-            @Override
-            public Choice estimateFor(Demand demand, List<Choice> commitments) {
-                return Choice.create(this, demand, commitments.size() > 0 ? 10 : 100);
-            }
-
-            @Override
-            public RecheckStrategy recheckStrategy() {
-                return RecheckStrategy.ON_COMMITMENT;
-            }
-        };
+        Supply constantSupply = ConstantSupply.create("a");
+        Supply optimizingSupply = ReducingRandomSupply.create("a");
         List<Demand> demands = Stream.of("a", "b", "c", "d", "e", "f", "g").map(ConstantDemand::create).collect(toList());
         Board board = new ImmutableBoard(ImmutableSet.of(constantSupply, optimizingSupply), demands);
         Choice optimisticChoice = new OptimisticPlayer().bestChoiceFor(board, Goals.MINIMIZE);
@@ -45,7 +25,6 @@ public class PlayerTest {
         Choice greedyChoice = new GreedyPlayer().bestChoiceFor(board, Goals.MINIMIZE);
         assert greedyChoice != null;
         assertEquals(constantSupply, greedyChoice.supply());
-
     }
 
 }

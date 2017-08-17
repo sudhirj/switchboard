@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Objects;
 
 @AutoValue
-abstract class ConstantSupply implements Supply {
-    static ConstantSupply create(String type) {
+public abstract class ConstantSupply implements Supply {
+    public static ConstantSupply create(String type) {
         return new AutoValue_ConstantSupply(type);
     }
 
