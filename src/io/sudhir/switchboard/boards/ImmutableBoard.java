@@ -18,27 +18,28 @@ public class ImmutableBoard implements Board {
     private final ImmutableTable<Supply, Demand, Choice> matrix;
     private final ImmutableList<Choice> choicesMade;
     private final ImmutableList<Board> history;
-    private final ImmutableSet<Supply> alwaysMutableSupplies;
 
     public ImmutableBoard(Collection<Supply> supplies, Collection<Demand> demands) {
         this(
                 supplies,
                 demands,
                 ImmutableList.of(),
-                ImmutableList.of(),
-                supplies.parallelStream()
-                        .filter(s -> s.recheckStrategy() == RecheckStrategy.ALWAYS)
-                        .collect(toSet())
+                ImmutableList.of()
         );
     }
 
-    private ImmutableBoard(Collection<Supply> supplies, Collection<Demand> demands, List<Choice> choicesMade, List<Board> history, Collection<Supply> alwaysMutableSupplies) {
+    private ImmutableBoard(Collection<Supply> supplies, Collection<Demand> demands, List<Choice> choicesMade, List<Board> history) {
         this.supplies = ImmutableSet.copyOf(supplies);
-        this.alwaysMutableSupplies = ImmutableSet.copyOf(alwaysMutableSupplies);
         this.demands = ImmutableSet.copyOf(demands);
         this.choicesMade = ImmutableList.copyOf(choicesMade);
         this.history = ImmutableList.copyOf(history);
         this.matrix = buildMatrix();
+    }
+
+    private Set<Supply> alwaysMutableSupplies() {
+        return supplies.parallelStream()
+                .filter(s -> s.recheckStrategy() == RecheckStrategy.ALWAYS)
+                .collect(toSet());
     }
 
     private ImmutableTable<Supply, Demand, Choice> buildMatrix() {
@@ -59,7 +60,7 @@ public class ImmutableBoard implements Board {
     }
 
     private Set<Supply> suppliesToRecompute() {
-        Set<Supply> suppliesToRecompute = new HashSet<>(history().size() > 0 ? alwaysMutableSupplies : supplies);
+        Set<Supply> suppliesToRecompute = new HashSet<>(history().size() > 0 ? alwaysMutableSupplies() : supplies);
         if (choicesMade().size() > 0) {
             Supply lastCommittedSupply = Iterables.getLast(choicesMade()).supply();
             if (lastCommittedSupply.recheckStrategy() == RecheckStrategy.ON_COMMITMENT) {
@@ -78,7 +79,7 @@ public class ImmutableBoard implements Board {
 
     @Override
     public Board choose(Choice choice) {
-        return new ImmutableBoard(supplies, demands, append(choicesMade(), choice), append(history(), this), alwaysMutableSupplies);
+        return new ImmutableBoard(supplies, demands, append(choicesMade(), choice), append(history(), this));
     }
 
     @Override
