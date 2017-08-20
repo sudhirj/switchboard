@@ -12,7 +12,7 @@ public class RandomPlayer implements Player {
 
     @Override
     public Choice bestChoiceFor(Board board, Goal goal) {
-        return board.availableChoices().iterator().next();
+        return board.availableChoices().stream().unordered().iterator().next();
     }
 
     @Override
