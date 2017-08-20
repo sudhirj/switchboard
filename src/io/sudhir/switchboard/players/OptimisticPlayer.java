@@ -11,10 +11,18 @@ import java.util.Collection;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 public class OptimisticPlayer implements Player {
+
+    private final double restrictionfactor;
+
+    public OptimisticPlayer() {
+        restrictionfactor = 20;
+    }
+
     @Nullable
     @Override
     public Choice bestChoiceFor(Board board, Goal goal) {
-        return board.availableChoices().parallelStream().reduce(
+        long limit = Double.valueOf(Math.ceil((double) board.availableChoices().size() / restrictionfactor)).longValue();
+        return board.availableChoices().parallelStream().sorted(goal.choiceComparator()).limit(limit).reduce(
                 new ConcurrentSkipListMap<Integer, Choice>(goal.comparator()),
                 (diffMap, choice) -> {
                     diffMap.put(board.boardScore() - board.choose(choice).boardScore(), choice);
