@@ -1,7 +1,5 @@
 package io.sudhir.switchboard;
 
-import com.google.common.collect.Table;
-
 import java.util.Collection;
 import java.util.List;
 
@@ -15,8 +13,6 @@ public interface Board {
     Collection<Choice> availableChoices();
 
     Collection<Demand> pendingDemands();
-
-    Table<Supply, Demand, Choice> matrix();
 
     List<Board> history();
 

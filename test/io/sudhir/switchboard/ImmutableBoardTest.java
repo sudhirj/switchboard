@@ -6,7 +6,6 @@ import io.sudhir.switchboard.boards.ImmutableBoard;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -70,40 +69,6 @@ public class ImmutableBoardTest {
         assertTrue(board.pendingDemands().contains(firstChoice.demand()));
         Board newBoard = board.choose(firstChoice);
         assertFalse(newBoard.pendingDemands().contains(firstChoice.demand()));
-    }
-
-    @Test
-    public void matrix() throws Exception {
-        assertNull(board.matrix().get(ConstantSupply.create("a"), ConstantDemand.create("b")));
-        assertNull(board.matrix().get(ConstantSupply.create("a"), ConstantDemand.create("d")));
-        assertEquals(42, board.matrix().get(ConstantSupply.create("a"), ConstantDemand.create("a")).score());
-        assertEquals(42, board.matrix().get(ConstantSupply.create("b"), ConstantDemand.create("b")).score());
-    }
-
-    @Test
-    public void matrixRebuilding() throws Exception {
-        List<List<Choice>> recordedCommitments = new ArrayList<>();
-        Supply recordingSupply = new Supply() {
-            @Override
-            public Choice estimateFor(Demand demand, List<Choice> commitments) {
-                recordedCommitments.add(commitments);
-                return Choice.create(this, demand, 42);
-            }
-
-            @Override
-            public RecheckStrategy recheckStrategy() {
-                return RecheckStrategy.ALWAYS;
-            }
-        };
-        List<Demand> demands = ImmutableList.of(ConstantDemand.create("a"), ConstantDemand.create("b"), ConstantDemand.create("c"));
-        Board recordingBoard = new ImmutableBoard(ImmutableList.of(recordingSupply), demands);
-        assertEquals(3, recordedCommitments.size());
-        assertTrue(recordedCommitments.get(0).isEmpty());
-        Choice choice = recordingBoard.availableChoices().iterator().next();
-        recordingBoard.choose(choice);
-        assertEquals(5, recordedCommitments.size());
-        assertEquals(1, recordedCommitments.get(3).size());
-        assertEquals(choice, recordedCommitments.get(3).get(0));
     }
 
     @Test
