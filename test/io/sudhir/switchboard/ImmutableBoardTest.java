@@ -23,7 +23,7 @@ public class ImmutableBoardTest {
         Collection<String> types = Arrays.asList("a", "b", "c", "d", "e");
         supplies = types.stream().map(ConstantSupply::create).collect(Collectors.toList());
         demands = types.stream().map(ConstantDemand::create).collect(Collectors.toList());
-        board = new ImmutableBoard(supplies, demands);
+        board = ImmutableBoard.create(supplies, demands);
     }
 
     @Test

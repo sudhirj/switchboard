@@ -12,7 +12,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="com.google.guava:guava:22.0" level="project" />
     <orderEntry type="library" name="junit:junit:4.12" level="project" />
-    <orderEntry type="library" name="com.google.auto.value:auto-value:1.2" level="project" />
     <orderEntry type="library" name="io.vavr:vavr:0.9.0" level="project" />
+    <orderEntry type="library" name="com.google.auto.value:auto-value:1.5" level="project" />
   </component>
 </module>

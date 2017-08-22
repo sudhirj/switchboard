@@ -38,6 +38,6 @@ public enum TestBoards {
                 demands = types.stream().map(ConstantDemand::create).collect(Collectors.toList());
                 break;
         }
-        return new ImmutableBoard(supplies, demands);
+        return ImmutableBoard.create(supplies, demands);
     }
 }
