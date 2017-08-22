@@ -18,7 +18,7 @@ public class PlayerTest {
         Supply optimizingSupply = ReducingRandomSupply.create("a");
         List<Demand> demands = Stream.of("a", "b", "c", "d", "e", "f", "g").map(ConstantDemand::create).collect(toList());
         Board board = ImmutableBoard.create(ImmutableSet.of(constantSupply, optimizingSupply), demands);
-        Choice optimisticChoice = new OptimisticPlayer().bestChoiceFor(board, Goals.MINIMIZE);
+        Choice optimisticChoice = new UnreasonablyOptimisticPlayer().bestChoiceFor(board, Goals.MINIMIZE);
         assert optimisticChoice != null;
         assertEquals(optimizingSupply, optimisticChoice.supply());
 

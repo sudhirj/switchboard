@@ -10,11 +10,11 @@ import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentSkipListMap;
 
-public class OptimisticPlayer implements Player {
+public class UnreasonablyOptimisticPlayer implements Player {
 
     private final double restrictionfactor;
 
-    public OptimisticPlayer() {
+    public UnreasonablyOptimisticPlayer() {
         restrictionfactor = 20;
     }
 
