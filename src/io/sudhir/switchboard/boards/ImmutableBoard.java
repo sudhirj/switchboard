@@ -10,9 +10,10 @@ import io.sudhir.switchboard.Supply;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
+import static com.google.common.collect.ImmutableList.toImmutableList;
+import static com.google.common.collect.ImmutableSet.toImmutableSet;
 
 public class ImmutableBoard implements Board {
 
@@ -55,22 +56,16 @@ public class ImmutableBoard implements Board {
 
     @Override
     public Collection<Choice> availableChoices() {
-        ImmutableSet.Builder<Choice> builder = ImmutableSet.builder();
-        for (Supply supply : supplies) {
-            List<Choice> committedChoices = choicesMade().parallelStream().filter(c -> c.supply().equals(supply)).collect(toList());
-            for (Demand demand : pendingDemands()) {
-                Choice estimate = supply.estimateFor(demand, committedChoices);
-                if (estimate != null) {
-                    builder.add(estimate);
+        return supplies.parallelStream().flatMap(supply -> {
+            List<Choice> committedChoices = choicesMade().parallelStream().filter(c -> c.supply().equals(supply)).collect(toImmutableList());
+            return pendingDemands().parallelStream().map(demand -> supply.estimateFor(demand, committedChoices));
                 }
-            }
-        }
-        return builder.build();
+        ).filter(Objects::nonNull).collect(toImmutableSet());
     }
 
     @Override
     public Collection<Demand> pendingDemands() {
-        return Sets.difference(demands, choicesMade().parallelStream().map(Choice::demand).collect(toSet()));
+        return Sets.difference(demands, choicesMade().parallelStream().map(Choice::demand).collect(toImmutableSet()));
     }
 
     @Override
