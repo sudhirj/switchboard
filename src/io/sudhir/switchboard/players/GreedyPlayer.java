@@ -10,9 +10,7 @@ import java.util.Collection;
 
 import static com.google.common.collect.ImmutableSet.toImmutableSet;
 
-
 public class GreedyPlayer implements Player {
-
     @Override
     @Nullable
     public Choice bestChoiceFor(Board board, Goal goal) {

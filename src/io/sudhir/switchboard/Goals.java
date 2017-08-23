@@ -7,14 +7,11 @@ import java.util.function.Function;
 public enum Goals implements Goal {
     MINIMIZE((i) -> i * -1), MAXIMIZE((i) -> i);
 
-    private final Function<Integer, Integer> transformer;
     private final Comparator<Board> boardComparator;
     private final Comparator<Choice> choiceComparator;
     private final Comparator<Integer> comparator;
 
     Goals(Function<Integer, Integer> transformer) {
-
-        this.transformer = transformer;
         this.boardComparator = Comparator.comparingInt(board -> transformer.apply(board.score()));
         this.choiceComparator = Comparator.comparingInt(choice -> transformer.apply(choice.score()));
         this.comparator = Comparator.comparingInt(transformer::apply);
@@ -34,6 +31,4 @@ public enum Goals implements Goal {
     public Comparator<Integer> comparator() {
         return comparator;
     }
-
-
 }

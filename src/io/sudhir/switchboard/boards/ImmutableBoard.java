@@ -59,8 +59,11 @@ public abstract class ImmutableBoard implements Board {
     @Memoized
     public Collection<Choice> availableChoices() {
         return supplies().parallelStream().flatMap(supply -> {
-            List<Choice> committedChoices = choicesMade().parallelStream().filter(c -> c.supply().equals(supply)).collect(toImmutableList());
-            return pendingDemands().parallelStream().map(demand -> supply.estimateFor(demand, committedChoices));
+            List<Choice> committedChoices = choicesMade().parallelStream()
+                    .filter(c -> c.supply().equals(supply))
+                    .collect(toImmutableList());
+            return pendingDemands().parallelStream().map(demand ->
+                    supply.estimateFor(demand, committedChoices));
                 }
         ).filter(Objects::nonNull).collect(toImmutableSet());
     }
@@ -80,7 +83,6 @@ public abstract class ImmutableBoard implements Board {
         return availableChoices().parallelStream().mapToInt(Choice::score).sum();
     }
 
-
     private <T> ImmutableList<T> append(List<T> items, T item) {
         ImmutableList.Builder<T> builder = ImmutableList.builder();
         builder.addAll(items);
@@ -88,5 +90,4 @@ public abstract class ImmutableBoard implements Board {
         return builder.build();
 
     }
-
 }
