@@ -4,9 +4,10 @@ package io.sudhir.switchboard.boards;
 import io.sudhir.switchboard.Choice;
 import io.sudhir.switchboard.Demand;
 import io.sudhir.switchboard.Supply;
+
+import javax.annotation.Generated;
 import java.util.List;
 import java.util.Set;
-import javax.annotation.Generated;
 
 @Generated("com.google.auto.value.processor.AutoValueProcessor")
  abstract class $AutoValue_ImmutableBoard extends ImmutableBoard {
