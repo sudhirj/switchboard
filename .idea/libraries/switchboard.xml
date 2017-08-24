@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="switchboard">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/out/artifacts/switchboard_jar/switchboard.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
