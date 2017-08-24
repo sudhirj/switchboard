@@ -2,7 +2,7 @@ package io.sudhir.switchboard;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import io.sudhir.switchboard.boards.ImmutableBoard;
+import io.sudhir.switchboard.boards.Board;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,17 +13,17 @@ import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
 
-public class ImmutableBoardTest {
+public class BoardTest {
     private List<Demand> demands;
     private List<Supply> supplies;
-    private ImmutableBoard board;
+    private Board board;
 
     @Before
     public void setUp() throws Exception {
         Collection<String> types = Arrays.asList("a", "b", "c", "d", "e");
         supplies = types.stream().map(ConstantSupply::create).collect(Collectors.toList());
         demands = types.stream().map(ConstantDemand::create).collect(Collectors.toList());
-        board = ImmutableBoard.create(supplies, demands);
+        board = Board.create(supplies, demands);
     }
 
     @Test

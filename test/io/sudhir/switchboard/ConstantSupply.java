@@ -25,8 +25,8 @@ public abstract class ConstantSupply implements Supply {
     }
 
     @Override
-    public RecheckStrategy recheckStrategy() {
-        return RecheckStrategy.NEVER;
+    public SupplyRecheckStrategy recheckStrategy() {
+        return SupplyRecheckStrategy.NEVER;
     }
 
     abstract String type();

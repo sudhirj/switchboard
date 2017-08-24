@@ -1,9 +1,8 @@
 package io.sudhir.switchboard.players;
 
-import io.sudhir.switchboard.Board;
 import io.sudhir.switchboard.Choice;
 import io.sudhir.switchboard.Goal;
-import io.sudhir.switchboard.Player;
+import io.sudhir.switchboard.boards.Board;
 
 import javax.annotation.Nullable;
 import java.util.Collection;

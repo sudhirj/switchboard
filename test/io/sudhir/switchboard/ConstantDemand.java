@@ -9,5 +9,4 @@ public abstract class ConstantDemand implements Demand {
     }
 
     abstract String type();
-
 }

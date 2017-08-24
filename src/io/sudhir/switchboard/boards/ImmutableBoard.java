@@ -5,7 +5,6 @@ import com.google.auto.value.extension.memoized.Memoized;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
-import io.sudhir.switchboard.Board;
 import io.sudhir.switchboard.Choice;
 import io.sudhir.switchboard.Demand;
 import io.sudhir.switchboard.Supply;
@@ -19,7 +18,7 @@ import static com.google.common.collect.ImmutableList.toImmutableList;
 import static com.google.common.collect.ImmutableSet.toImmutableSet;
 
 @AutoValue
-public abstract class ImmutableBoard implements Board {
+abstract class ImmutableBoard implements Board {
 
     public static ImmutableBoard create(Collection<Supply> supplies, Collection<Demand> demands) {
         return new AutoValue_ImmutableBoard(
@@ -59,11 +58,11 @@ public abstract class ImmutableBoard implements Board {
     @Memoized
     public Collection<Choice> availableChoices() {
         return supplies().parallelStream().flatMap(supply -> {
-            List<Choice> committedChoices = choicesMade().parallelStream()
-                    .filter(c -> c.supply().equals(supply))
-                    .collect(toImmutableList());
-            return pendingDemands().parallelStream().map(demand ->
-                    supply.estimateFor(demand, committedChoices));
+                    List<Choice> committedChoices = choicesMade().parallelStream()
+                            .filter(c -> c.supply().equals(supply))
+                            .collect(toImmutableList());
+                    return pendingDemands().parallelStream().map(demand ->
+                            supply.estimateFor(demand, committedChoices));
                 }
         ).filter(Objects::nonNull).collect(toImmutableSet());
     }

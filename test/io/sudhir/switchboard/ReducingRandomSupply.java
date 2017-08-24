@@ -21,8 +21,8 @@ public abstract class ReducingRandomSupply implements Supply {
     }
 
     @Override
-    public RecheckStrategy recheckStrategy() {
-        return RecheckStrategy.ON_COMMITMENT;
+    public SupplyRecheckStrategy recheckStrategy() {
+        return SupplyRecheckStrategy.ON_COMMITMENT;
     }
 
     abstract String type();

@@ -1,6 +1,6 @@
 package io.sudhir.switchboard;
 
-import io.sudhir.switchboard.boards.ImmutableBoard;
+import io.sudhir.switchboard.boards.Board;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,6 +38,6 @@ public enum TestBoards {
                 demands = types.stream().map(ConstantDemand::create).collect(Collectors.toList());
                 break;
         }
-        return ImmutableBoard.create(supplies, demands);
+        return Board.create(supplies, demands);
     }
 }

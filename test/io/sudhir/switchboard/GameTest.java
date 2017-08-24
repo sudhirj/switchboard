@@ -1,8 +1,11 @@
 package io.sudhir.switchboard;
 
 import com.google.common.collect.ImmutableSet;
+import io.sudhir.switchboard.boards.Board;
+import io.sudhir.switchboard.games.Game;
 import io.sudhir.switchboard.games.SinglePlayerSequentialGame;
 import io.sudhir.switchboard.players.GreedyPlayer;
+import io.sudhir.switchboard.players.Player;
 import io.sudhir.switchboard.players.RandomPlayer;
 import io.sudhir.switchboard.players.UnreasonablyOptimisticPlayer;
 import org.junit.Before;

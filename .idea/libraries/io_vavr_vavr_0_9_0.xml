@@ -4,6 +4,8 @@
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/lib/vavr-0.9.0.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/vavr-match-0.9.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/vavr-match-0.9.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/vavr-match-0.9.0.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/lib/vavr-0.9.0-javadoc.jar!/" />

@@ -1,6 +1,9 @@
 package io.sudhir.switchboard.games;
 
-import io.sudhir.switchboard.*;
+import io.sudhir.switchboard.Choice;
+import io.sudhir.switchboard.Goal;
+import io.sudhir.switchboard.boards.Board;
+import io.sudhir.switchboard.players.Player;
 
 public class SinglePlayerSequentialGame implements Game {
     private final Player player;

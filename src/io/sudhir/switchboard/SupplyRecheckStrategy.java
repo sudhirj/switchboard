@@ -1,5 +1,5 @@
 package io.sudhir.switchboard;
 
-public enum RecheckStrategy {
+public enum SupplyRecheckStrategy {
     NEVER, ON_COMMITMENT, ALWAYS
 }
