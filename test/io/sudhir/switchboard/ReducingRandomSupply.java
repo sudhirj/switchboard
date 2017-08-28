@@ -20,10 +20,5 @@ public abstract class ReducingRandomSupply implements Supply {
                         50 + new Double(Math.random() * 1000).intValue());
     }
 
-    @Override
-    public SupplyRecheckStrategy recheckStrategy() {
-        return SupplyRecheckStrategy.ON_COMMITMENT;
-    }
-
     abstract String type();
 }

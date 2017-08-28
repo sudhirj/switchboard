@@ -6,5 +6,4 @@ public interface Supply {
 
     Choice estimateFor(Demand demand, List<Choice> commitments);
 
-    SupplyRecheckStrategy recheckStrategy();
 }
