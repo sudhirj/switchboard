@@ -15,7 +15,11 @@ public class UnreasonablyOptimisticPlayer implements Player {
     private final double reductionFactor;
 
     public UnreasonablyOptimisticPlayer() {
-        reductionFactor = 20;
+        this(10);
+    }
+
+    public UnreasonablyOptimisticPlayer(double reductionFactor) {
+        this.reductionFactor = reductionFactor;
     }
 
     @Nullable
