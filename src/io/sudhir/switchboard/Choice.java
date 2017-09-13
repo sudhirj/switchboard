@@ -3,22 +3,22 @@ package io.sudhir.switchboard;
 import com.google.auto.value.AutoValue;
 
 public interface Choice {
-    static Choice create(Supply supply, Demand demand, int score) {
-        return new AutoValue_ImmutableChoice(supply, demand, score);
-    }
+  static Choice create(Supply supply, Demand demand, int score) {
+    return new AutoValue_ImmutableChoice(supply, demand, score);
+  }
 
-    Supply supply();
+  Supply supply();
 
-    Demand demand();
+  Demand demand();
 
-    int score();
+  int score();
 }
 
 @AutoValue
 abstract class ImmutableChoice implements Choice {
-    public abstract Supply supply();
+  public abstract Supply supply();
 
-    public abstract Demand demand();
+  public abstract Demand demand();
 
-    public abstract int score();
+  public abstract int score();
 }

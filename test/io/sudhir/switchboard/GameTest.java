@@ -18,36 +18,32 @@ import static org.junit.Assert.assertTrue;
 
 public class GameTest {
 
-    private Collection<Player> players;
+  private Collection<Player> players;
 
-    @Before
-    public void setUp() throws Exception {
-        players = ImmutableSet.of(
-                new RandomPlayer(),
-                new GreedyPlayer(),
-                new UnreasonablyOptimisticPlayer()
-        );
-    }
+  @Before
+  public void setUp() throws Exception {
+    players =
+        ImmutableSet.of(new RandomPlayer(), new GreedyPlayer(), new UnreasonablyOptimisticPlayer());
+  }
 
-    @Test
-    public void simpleRandomGame() {
-        Board board = TestBoards.CONSTANT.board();
-        for (Player player : players) {
-            Game game = new SinglePlayerSequentialGame(player);
-            Board finishedBoard = game.run(board, Goals.MINIMIZE);
-            assertTrue(finishedBoard.isComplete());
-            assertEquals(5, finishedBoard.choicesMade().size());
-            assertEquals(42 * 5, finishedBoard.score());
-        }
+  @Test
+  public void simpleRandomGame() {
+    Board board = TestBoards.CONSTANT.board();
+    for (Player player : players) {
+      Game game = new SinglePlayerSequentialGame(player);
+      Board finishedBoard = game.run(board, Goals.MINIMIZE);
+      assertTrue(finishedBoard.isComplete());
+      assertEquals(5, finishedBoard.choicesMade().size());
+      assertEquals(42 * 5, finishedBoard.score());
     }
+  }
 
-    @Test
-    public void benchmarkRunningOnRandomBoard() {
-        Board board = TestBoards.RANDOM.board();
-        for (Player player : players) {
-            Game game = new SinglePlayerSequentialGame(player);
-            game.run(board, Goals.MINIMIZE);
-        }
+  @Test
+  public void benchmarkRunningOnRandomBoard() {
+    Board board = TestBoards.RANDOM.board();
+    for (Player player : players) {
+      Game game = new SinglePlayerSequentialGame(player);
+      game.run(board, Goals.MINIMIZE);
     }
+  }
 }
-

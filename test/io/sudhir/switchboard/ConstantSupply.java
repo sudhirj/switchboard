@@ -7,22 +7,23 @@ import java.util.Objects;
 
 @AutoValue
 public abstract class ConstantSupply implements Supply {
-    public static ConstantSupply create(String type) {
-        return new AutoValue_ConstantSupply(type);
-    }
+  public static ConstantSupply create(String type) {
+    return new AutoValue_ConstantSupply(type);
+  }
 
-    @Override
-    public Choice estimateFor(Demand demand, List<Choice> commitments) {
-        // Avoiding the casts on supply nodes for their companion demand nodes is far more trouble than it's worth.
-        // https://blogs.msdn.microsoft.com/ericlippert/2011/02/03/curiouser-and-curiouser/
-        if (demand instanceof ConstantDemand) {
-            ConstantDemand constantDemand = (ConstantDemand) demand;
-            if (Objects.equals(type(), constantDemand.type())) {
-                return Choice.create(this, demand, 42);
-            }
-        }
-        return null;
+  @Override
+  public Choice estimateFor(Demand demand, List<Choice> commitments) {
+    // Avoiding the casts on supply nodes for their companion demand nodes is far more trouble than
+    // it's worth.
+    // https://blogs.msdn.microsoft.com/ericlippert/2011/02/03/curiouser-and-curiouser/
+    if (demand instanceof ConstantDemand) {
+      ConstantDemand constantDemand = (ConstantDemand) demand;
+      if (Objects.equals(type(), constantDemand.type())) {
+        return Choice.create(this, demand, 42);
+      }
     }
+    return null;
+  }
 
-    abstract String type();
+  abstract String type();
 }

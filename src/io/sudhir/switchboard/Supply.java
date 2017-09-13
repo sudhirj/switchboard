@@ -4,6 +4,5 @@ import java.util.List;
 
 public interface Supply {
 
-    Choice estimateFor(Demand demand, List<Choice> commitments);
-
+  Choice estimateFor(Demand demand, List<Choice> commitments);
 }

@@ -4,9 +4,9 @@ import com.google.auto.value.AutoValue;
 
 @AutoValue
 public abstract class ConstantDemand implements Demand {
-    public static ConstantDemand create(String type) {
-        return new AutoValue_ConstantDemand(type);
-    }
+  public static ConstantDemand create(String type) {
+    return new AutoValue_ConstantDemand(type);
+  }
 
-    abstract String type();
+  abstract String type();
 }

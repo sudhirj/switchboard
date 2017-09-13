@@ -8,25 +8,25 @@ import java.util.Collection;
 import java.util.List;
 
 public interface Board {
-    static Board create(Collection<Supply> supplies, Collection<Demand> demands) {
-        return ImmutableBoard.create(supplies, demands);
-    }
+  static Board create(Collection<Supply> supplies, Collection<Demand> demands) {
+    return ImmutableBoard.create(supplies, demands);
+  }
 
-    Board choose(Choice choice);
+  Board choose(Choice choice);
 
-    boolean isComplete();
+  boolean isComplete();
 
-    boolean canProceed();
+  boolean canProceed();
 
-    Collection<Choice> availableChoices();
+  Collection<Choice> availableChoices();
 
-    Collection<Demand> pendingDemands();
+  Collection<Demand> pendingDemands();
 
-    List<Board> history();
+  List<Board> history();
 
-    List<Choice> choicesMade();
+  List<Choice> choicesMade();
 
-    int score();
+  int score();
 
-    int boardScore();
+  int boardScore();
 }
