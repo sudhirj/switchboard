@@ -1,9 +1,6 @@
 
 package io.sudhir.switchboard;
 
-import javax.annotation.Generated;
-
-@Generated("com.google.auto.value.processor.AutoValueProcessor")
  final class AutoValue_ConstantDemand extends ConstantDemand {
 
   private final String type;

@@ -1,5 +1,8 @@
 package io.sudhir.switchboard;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import com.google.common.collect.ImmutableSet;
 import io.sudhir.switchboard.boards.Board;
 import io.sudhir.switchboard.games.Game;
@@ -7,14 +10,9 @@ import io.sudhir.switchboard.games.SinglePlayerSequentialGame;
 import io.sudhir.switchboard.players.GreedyPlayer;
 import io.sudhir.switchboard.players.Player;
 import io.sudhir.switchboard.players.RandomPlayer;
-import io.sudhir.switchboard.players.UnreasonablyOptimisticPlayer;
+import java.util.Collection;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.Collection;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 public class GameTest {
 
@@ -23,7 +21,7 @@ public class GameTest {
   @Before
   public void setUp() throws Exception {
     players =
-        ImmutableSet.of(new RandomPlayer(), new GreedyPlayer(), new UnreasonablyOptimisticPlayer());
+        ImmutableSet.of(new RandomPlayer(), new GreedyPlayer());
   }
 
   @Test

@@ -1,9 +1,6 @@
 
 package io.sudhir.switchboard;
 
-import javax.annotation.Generated;
-
-@Generated("com.google.auto.value.processor.AutoValueProcessor")
  final class AutoValue_ReducingRandomSupply extends ReducingRandomSupply {
 
   private final String type;

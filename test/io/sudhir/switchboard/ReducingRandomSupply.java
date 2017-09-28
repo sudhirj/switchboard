@@ -1,7 +1,6 @@
 package io.sudhir.switchboard;
 
 import com.google.auto.value.AutoValue;
-
 import java.util.List;
 
 @AutoValue
@@ -16,8 +15,8 @@ public abstract class ReducingRandomSupply implements Supply {
         this,
         demand,
         commitments.size() > 0
-            ? new Double(Math.random() * 10).intValue()
-            : 50 + new Double(Math.random() * 1000).intValue());
+            ? Double.valueOf(Math.random() * 10).intValue()
+            : 50 + Double.valueOf(Math.random() * 1000).intValue());
   }
 
   abstract String type();
