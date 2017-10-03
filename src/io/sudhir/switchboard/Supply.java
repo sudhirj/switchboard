@@ -1,8 +1,9 @@
 package io.sudhir.switchboard;
 
-import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 public interface Supply {
 
-  Choice estimateFor(Demand demand, List<Choice> commitments);
+  Optional<Choice> estimateFor(Demand demand, Stream<Choice> commitments);
 }

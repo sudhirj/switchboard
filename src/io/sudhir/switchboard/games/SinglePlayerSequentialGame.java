@@ -4,6 +4,7 @@ import io.sudhir.switchboard.Choice;
 import io.sudhir.switchboard.Goal;
 import io.sudhir.switchboard.boards.Board;
 import io.sudhir.switchboard.players.Player;
+import java.util.Optional;
 
 public class SinglePlayerSequentialGame implements Game {
   private final Player player;
@@ -16,8 +17,8 @@ public class SinglePlayerSequentialGame implements Game {
   public Board run(Board startingBoard, Goal goal) {
     Board runningBoard = startingBoard;
     while (runningBoard.canProceed() && !runningBoard.isComplete()) {
-      Choice choice = player.bestChoiceFor(runningBoard, goal);
-      runningBoard = runningBoard.choose(choice);
+      Optional<Choice> choice = player.bestChoiceFor(runningBoard, goal);
+      runningBoard = runningBoard.choose(choice.get());
     }
     return runningBoard;
   }

@@ -1,19 +1,18 @@
 package io.sudhir.switchboard.boards;
 
-import static com.google.common.collect.ImmutableList.toImmutableList;
 import static com.google.common.collect.ImmutableSet.toImmutableSet;
 
 import com.google.auto.value.AutoValue;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Sets;
 import io.sudhir.switchboard.Choice;
 import io.sudhir.switchboard.Demand;
 import io.sudhir.switchboard.Supply;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
 
 @AutoValue
 abstract class ImmutableBoard implements Board {
@@ -44,37 +43,40 @@ abstract class ImmutableBoard implements Board {
 
   @Override
   public boolean isComplete() {
-    return pendingDemands().isEmpty();
+    return !pendingDemands().findAny().isPresent();
   }
 
   @Override
   public boolean canProceed() {
-    return !availableChoices().isEmpty();
+    return availableChoices().findAny().isPresent();
   }
 
   @Override
-  public Collection<Choice> availableChoices() {
+  public Stream<Choice> availableChoices() {
+    return pendingDemands().flatMap(this::availableChoices);
+  }
+
+  @Override
+  public Stream<Demand> pendingDemands() {
+    ImmutableSet<Demand> metDemands = metDemands().collect(toImmutableSet());
+    return demands().parallelStream().filter(demand -> !metDemands.contains(demand));
+  }
+
+  private Stream<Demand> metDemands() {
+    return choicesMade().parallelStream().map(Choice::demand);
+  }
+
+  @Override
+  public Stream<Choice> availableChoices(Demand demand) {
     return supplies()
         .parallelStream()
-        .flatMap(
-            supply -> {
-              List<Choice> committedChoices =
-                  choicesMade()
-                      .parallelStream()
-                      .filter(c -> c.supply().equals(supply))
-                      .collect(toImmutableList());
-              return pendingDemands()
-                  .parallelStream()
-                  .map(demand -> supply.estimateFor(demand, committedChoices));
-            })
-        .filter(Objects::nonNull)
-        .collect(toImmutableSet());
+        .map(supply -> supply.estimateFor(demand, streamCommitmentsForSupply(supply)))
+        .filter(Optional::isPresent)
+        .map(Optional::get);
   }
 
-  @Override
-  public Collection<Demand> pendingDemands() {
-    return Sets.difference(
-        demands(), choicesMade().parallelStream().map(Choice::demand).collect(toImmutableSet()));
+  private Stream<Choice> streamCommitmentsForSupply(Supply supply) {
+    return choicesMade().parallelStream().filter(c -> c.supply().equals(supply));
   }
 
   @Override
@@ -84,7 +86,7 @@ abstract class ImmutableBoard implements Board {
 
   @Override
   public int boardScore() {
-    return availableChoices().parallelStream().mapToInt(Choice::score).sum();
+    return availableChoices().mapToInt(Choice::score).sum();
   }
 
   private <T> ImmutableList<T> append(List<T> items, T item) {
