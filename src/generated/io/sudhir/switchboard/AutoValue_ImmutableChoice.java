@@ -5,12 +5,12 @@ package io.sudhir.switchboard;
 
   private final Supply supply;
   private final Demand demand;
-  private final int score;
+  private final double score;
 
   AutoValue_ImmutableChoice(
       Supply supply,
       Demand demand,
-      int score) {
+      double score) {
     if (supply == null) {
       throw new NullPointerException("Null supply");
     }
@@ -33,7 +33,7 @@ package io.sudhir.switchboard;
   }
 
   @Override
-  public int score() {
+  public double score() {
     return score;
   }
 
@@ -55,7 +55,7 @@ package io.sudhir.switchboard;
       ImmutableChoice that = (ImmutableChoice) o;
       return (this.supply.equals(that.supply()))
            && (this.demand.equals(that.demand()))
-           && (this.score == that.score());
+           && (Double.doubleToLongBits(this.score) == Double.doubleToLongBits(that.score()));
     }
     return false;
   }
@@ -68,7 +68,7 @@ package io.sudhir.switchboard;
     h *= 1000003;
     h ^= this.demand.hashCode();
     h *= 1000003;
-    h ^= this.score;
+    h ^= (int) ((Double.doubleToLongBits(this.score) >>> 32) ^ Double.doubleToLongBits(this.score));
     return h;
   }
 

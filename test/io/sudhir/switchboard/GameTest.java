@@ -32,7 +32,7 @@ public class GameTest {
       Board finishedBoard = game.run(board, Goals.MINIMIZE);
       assertTrue(finishedBoard.isComplete());
       assertEquals(5, finishedBoard.choicesMade().size());
-      assertEquals(42 * 5, finishedBoard.score());
+      assertEquals(42 * 5, finishedBoard.score(), 0.01);
     }
   }
 

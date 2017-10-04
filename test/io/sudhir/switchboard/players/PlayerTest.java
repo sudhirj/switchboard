@@ -53,8 +53,8 @@ public class PlayerTest {
             .limit(3)
             .collect(toImmutableSet());
     assertEquals(3, greedyChoices.size());
-    assertEquals(42, ImmutableList.copyOf(greedyChoices).get(0).score());
-    assertEquals(42, ImmutableList.copyOf(greedyChoices).get(1).score());
-    assertEquals(42, ImmutableList.copyOf(greedyChoices).get(2).score());
+    assertEquals(42, ImmutableList.copyOf(greedyChoices).get(0).score(), 0.01);
+    assertEquals(42, ImmutableList.copyOf(greedyChoices).get(1).score(), 0.01);
+    assertEquals(42, ImmutableList.copyOf(greedyChoices).get(2).score(), 0.01);
   }
 }

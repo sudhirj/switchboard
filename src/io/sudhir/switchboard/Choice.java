@@ -11,7 +11,7 @@ public interface Choice {
 
   Demand demand();
 
-  int score();
+  double score();
 }
 
 @AutoValue
@@ -20,5 +20,5 @@ abstract class ImmutableChoice implements Choice {
 
   public abstract Demand demand();
 
-  public abstract int score();
+  public abstract double score();
 }

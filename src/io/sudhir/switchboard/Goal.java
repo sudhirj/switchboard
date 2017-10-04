@@ -11,12 +11,12 @@ enum Goals implements Goal {
 
   private final Comparator<Board> boardComparator;
   private final Comparator<Choice> choiceComparator;
-  private final Comparator<Integer> comparator;
+  private final Comparator<Double> comparator;
 
-  Goals(Function<Integer, Integer> transformer) {
-    this.boardComparator = Comparator.comparingInt(board -> transformer.apply(board.score()));
-    this.choiceComparator = Comparator.comparingInt(choice -> transformer.apply(choice.score()));
-    this.comparator = Comparator.comparingInt(transformer::apply);
+  Goals(Function<Double, Double> transformer) {
+    this.boardComparator = Comparator.comparingDouble(board -> transformer.apply(board.score()));
+    this.choiceComparator = Comparator.comparingDouble(choice -> transformer.apply(choice.score()));
+    this.comparator = Comparator.comparingDouble(transformer::apply);
   }
 
   @Override
@@ -30,7 +30,7 @@ enum Goals implements Goal {
   }
 
   @Override
-  public final Comparator<Integer> comparator() {
+  public final Comparator<Double> comparator() {
     return comparator;
   }
 }
@@ -48,5 +48,5 @@ public interface Goal {
 
   Comparator<Choice> choiceComparator();
 
-  Comparator<Integer> comparator();
+  Comparator<Double> comparator();
 }

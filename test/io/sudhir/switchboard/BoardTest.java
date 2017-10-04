@@ -49,8 +49,8 @@ public class BoardTest {
     Board currentBoard = board;
     assertFalse(currentBoard.isComplete());
     assertTrue(currentBoard.canProceed());
-    assertEquals(42 * 5, currentBoard.boardScore());
-    assertEquals(0, currentBoard.score());
+    assertEquals(42 * 5, currentBoard.boardScore(), 0.01);
+    assertEquals(0, currentBoard.score(), 0.01);
 
     while (currentBoard.availableChoices().findAny().isPresent()) {
       assertTrue(currentBoard.canProceed());
@@ -60,8 +60,8 @@ public class BoardTest {
 
     assertTrue(currentBoard.isComplete());
     assertFalse(currentBoard.canProceed());
-    assertEquals(0, currentBoard.boardScore());
-    assertEquals(42 * 5, currentBoard.score());
+    assertEquals(0, currentBoard.boardScore(), 0.01);
+    assertEquals(42 * 5, currentBoard.score(), 0.01);
   }
 
   @Test

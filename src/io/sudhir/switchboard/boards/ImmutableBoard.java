@@ -80,13 +80,13 @@ abstract class ImmutableBoard implements Board {
   }
 
   @Override
-  public int score() {
-    return choicesMade().parallelStream().mapToInt(Choice::score).sum();
+  public double score() {
+    return choicesMade().parallelStream().mapToDouble(Choice::score).sum();
   }
 
   @Override
-  public int boardScore() {
-    return availableChoices().mapToInt(Choice::score).sum();
+  public double boardScore() {
+    return availableChoices().mapToDouble(Choice::score).sum();
   }
 
   private <T> ImmutableList<T> append(List<T> items, T item) {

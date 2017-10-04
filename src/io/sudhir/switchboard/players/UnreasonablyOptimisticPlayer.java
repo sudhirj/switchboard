@@ -24,7 +24,7 @@ public class UnreasonablyOptimisticPlayer implements Player {
         .availableChoices()
         .sorted(goal.choiceComparator())
         .reduce(
-            new ConcurrentSkipListMap<Integer, Choice>(goal.comparator()),
+            new ConcurrentSkipListMap<Double, Choice>(goal.comparator()),
             (diffMap, choice) -> {
               diffMap.put(board.boardScore() - board.choose(choice).boardScore(), choice);
               return diffMap;

@@ -28,7 +28,7 @@ public interface Board {
 
   List<Choice> choicesMade();
 
-  int score();
+  double score();
 
-  int boardScore();
+  double boardScore();
 }
