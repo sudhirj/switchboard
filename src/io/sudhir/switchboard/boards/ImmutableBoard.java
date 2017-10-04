@@ -57,6 +57,15 @@ abstract class ImmutableBoard implements Board {
   }
 
   @Override
+  public Stream<Choice> availableChoices(Demand demand) {
+    return supplies()
+        .parallelStream()
+        .map(supply -> supply.estimateFor(demand, supplyCommitmentStream(supply)))
+        .filter(Optional::isPresent)
+        .map(Optional::get);
+  }
+
+  @Override
   public Stream<Demand> pendingDemands() {
     ImmutableSet<Demand> metDemands = metDemands().collect(toImmutableSet());
     return demands().parallelStream().filter(demand -> !metDemands.contains(demand));
@@ -66,16 +75,7 @@ abstract class ImmutableBoard implements Board {
     return choicesMade().parallelStream().map(Choice::demand);
   }
 
-  @Override
-  public Stream<Choice> availableChoices(Demand demand) {
-    return supplies()
-        .parallelStream()
-        .map(supply -> supply.estimateFor(demand, streamCommitmentsForSupply(supply)))
-        .filter(Optional::isPresent)
-        .map(Optional::get);
-  }
-
-  private Stream<Choice> streamCommitmentsForSupply(Supply supply) {
+  private Stream<Choice> supplyCommitmentStream(Supply supply) {
     return choicesMade().parallelStream().filter(c -> c.supply().equals(supply));
   }
 

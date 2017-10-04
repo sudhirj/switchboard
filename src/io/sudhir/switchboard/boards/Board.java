@@ -20,9 +20,9 @@ public interface Board {
 
   Stream<Choice> availableChoices();
 
-  Stream<Demand> pendingDemands();
-
   Stream<Choice> availableChoices(Demand demand);
+
+  Stream<Demand> pendingDemands();
 
   List<Board> history();
 
