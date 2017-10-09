@@ -48,12 +48,12 @@ import java.util.Set;
   }
 
   @Override
-  Optional<Choice> choice() {
+  public Optional<Choice> choice() {
     return choice;
   }
 
   @Override
-  Optional<ImmutableBoard> board() {
+  public Optional<ImmutableBoard> board() {
     return board;
   }
 

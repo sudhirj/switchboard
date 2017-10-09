@@ -1,6 +1,5 @@
 package io.sudhir.switchboard.boards;
 
-import static com.google.common.collect.ImmutableList.toImmutableList;
 import static com.google.common.collect.ImmutableSet.toImmutableSet;
 
 import com.google.auto.value.AutoValue;
@@ -30,28 +29,19 @@ abstract class ImmutableBoard implements Board {
 
   abstract Set<Demand> demands();
 
-  abstract Optional<Choice> choice();
-
-  abstract Optional<ImmutableBoard> board();
+  @Override
+  public abstract Optional<Choice> choice();
 
   @Override
-  public List<Choice> choicesMade() {
-    return choiceStream().collect(toImmutableList());
-  }
+  public abstract Optional<ImmutableBoard> board();
 
-  private Stream<Choice> choiceStream() {
-    return historyStream()
-        .map(ImmutableBoard::choice)
-        .filter(Optional::isPresent)
-        .map(Optional::get);
+  @Override
+  public Stream<Choice> choicesMade() {
+    return history().map(Board::choice).filter(Optional::isPresent).map(Optional::get);
   }
 
   @Override
-  public List<Board> history() {
-    return historyStream().collect(toImmutableList());
-  }
-
-  private Stream<ImmutableBoard> historyStream() {
+  public Stream<Board> history() {
     return Stream.iterate(Optional.of(this), Optional::isPresent, board -> board.get().board())
         .map(Optional::get);
   }
@@ -93,16 +83,16 @@ abstract class ImmutableBoard implements Board {
   }
 
   private Stream<Demand> metDemands() {
-    return choicesMade().parallelStream().map(Choice::demand);
+    return choicesMade().parallel().map(Choice::demand);
   }
 
   private Stream<Choice> supplyCommitmentStream(Supply supply) {
-    return choicesMade().parallelStream().filter(c -> c.supply().equals(supply));
+    return choicesMade().parallel().filter(c -> c.supply().equals(supply));
   }
 
   @Override
   public double score() {
-    return choicesMade().parallelStream().mapToDouble(Choice::score).sum();
+    return choicesMade().parallel().mapToDouble(Choice::score).sum();
   }
 
   @Override

@@ -1,5 +1,6 @@
 package io.sudhir.switchboard;
 
+import static com.google.common.collect.ImmutableList.toImmutableList;
 import static com.google.common.collect.ImmutableSet.toImmutableSet;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -42,7 +43,7 @@ public class BoardTest {
   public void choose() throws Exception {
     Choice firstChoice = board.availableChoices().iterator().next();
     Board newBoard = board.choose(firstChoice);
-    assertEquals(ImmutableList.of(firstChoice), ImmutableList.copyOf(newBoard.choicesMade()));
+    assertEquals(ImmutableList.of(firstChoice), newBoard.choicesMade().collect(toImmutableList()));
   }
 
   @Test
@@ -81,10 +82,11 @@ public class BoardTest {
     Board firstBoard = board;
     Board secondBoard = firstBoard.choose(firstBoard.availableChoices().iterator().next());
     assertEquals(
-        ImmutableList.of(secondBoard, firstBoard), ImmutableList.copyOf(secondBoard.history()));
+        ImmutableList.of(secondBoard, firstBoard),
+        secondBoard.history().collect(toImmutableList()));
     Board thirdBoard = secondBoard.choose(secondBoard.availableChoices().iterator().next());
     assertEquals(
         ImmutableList.of(thirdBoard, secondBoard, firstBoard),
-        ImmutableList.copyOf(thirdBoard.history()));
+        thirdBoard.history().collect(toImmutableList()));
   }
 }

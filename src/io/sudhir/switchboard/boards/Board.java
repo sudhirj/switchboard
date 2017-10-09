@@ -4,7 +4,7 @@ import io.sudhir.switchboard.Choice;
 import io.sudhir.switchboard.Demand;
 import io.sudhir.switchboard.Supply;
 import java.util.Collection;
-import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 public interface Board {
@@ -24,9 +24,13 @@ public interface Board {
 
   Stream<Demand> pendingDemands();
 
-  List<Board> history();
+  Stream<Board> history();
 
-  List<Choice> choicesMade();
+  Stream<Choice> choicesMade();
+
+  Optional<Choice> choice();
+
+  Optional<ImmutableBoard> board();
 
   double score();
 
