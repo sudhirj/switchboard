@@ -24,7 +24,7 @@ public interface Board {
 
   Stream<Demand> pendingDemands();
 
-  List<? extends Board> history();
+  List<Board> history();
 
   List<Choice> choicesMade();
 

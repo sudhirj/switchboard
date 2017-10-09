@@ -47,7 +47,7 @@ abstract class ImmutableBoard implements Board {
   }
 
   @Override
-  public List<? extends Board> history() {
+  public List<Board> history() {
     return historyStream().collect(toImmutableList());
   }
 
