@@ -27,7 +27,7 @@ public enum TestBoards {
         for (Integer i = 1; i < 100; i++) {
           supplies.add(ReducingRandomSupply.create(i.toString()));
         }
-        for (Integer i = 1; i < 200; i++) {
+        for (Integer i = 1; i < 500; i++) {
           demands.add(ConstantDemand.create(i.toString()));
         }
         break;
