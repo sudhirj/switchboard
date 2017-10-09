@@ -1,7 +1,6 @@
 package io.sudhir.switchboard;
 
 import io.sudhir.switchboard.boards.Board;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -28,7 +27,7 @@ public enum TestBoards {
         for (Integer i = 1; i < 100; i++) {
           supplies.add(ReducingRandomSupply.create(i.toString()));
         }
-        for (Integer i = 1; i < 100; i++) {
+        for (Integer i = 1; i < 200; i++) {
           demands.add(ConstantDemand.create(i.toString()));
         }
         break;

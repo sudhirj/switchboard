@@ -19,7 +19,6 @@ public class UnreasonablyOptimisticPlayer implements Player {
   }
 
   private Collection<Choice> goodChoicesFor(Board board, Goal goal) {
-
     return board
         .availableChoices()
         .sorted(goal.choiceComparator())

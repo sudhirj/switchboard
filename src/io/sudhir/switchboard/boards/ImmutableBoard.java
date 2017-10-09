@@ -3,13 +3,12 @@ package io.sudhir.switchboard.boards;
 import static com.google.common.collect.ImmutableSet.toImmutableSet;
 
 import com.google.auto.value.AutoValue;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
 import io.sudhir.switchboard.Choice;
 import io.sudhir.switchboard.Demand;
 import io.sudhir.switchboard.Supply;
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -17,7 +16,7 @@ import java.util.stream.Stream;
 @AutoValue
 abstract class ImmutableBoard implements Board {
 
-  public static ImmutableBoard create(Collection<Supply> supplies, Collection<Demand> demands) {
+  static ImmutableBoard create(Collection<Supply> supplies, Collection<Demand> demands) {
     return new AutoValue_ImmutableBoard(
         ImmutableSet.copyOf(supplies),
         ImmutableSet.copyOf(demands),
@@ -71,23 +70,15 @@ abstract class ImmutableBoard implements Board {
   public Stream<Choice> availableChoices(Demand demand) {
     return supplies()
         .parallelStream()
-        .map(supply -> supply.estimateFor(demand, supplyCommitmentStream(supply)))
+        .map(supply -> supply.estimateFor(demand, choicesMade()))
         .filter(Optional::isPresent)
         .map(Optional::get);
   }
 
   @Override
   public Stream<Demand> pendingDemands() {
-    ImmutableSet<Demand> metDemands = metDemands().collect(toImmutableSet());
-    return demands().parallelStream().filter(demand -> !metDemands.contains(demand));
-  }
-
-  private Stream<Demand> metDemands() {
-    return choicesMade().parallel().map(Choice::demand);
-  }
-
-  private Stream<Choice> supplyCommitmentStream(Supply supply) {
-    return choicesMade().parallel().filter(c -> c.supply().equals(supply));
+    return Sets.difference(demands(), choicesMade().map(Choice::demand).collect(toImmutableSet()))
+        .parallelStream();
   }
 
   @Override
@@ -98,12 +89,5 @@ abstract class ImmutableBoard implements Board {
   @Override
   public double boardScore() {
     return availableChoices().mapToDouble(Choice::score).sum();
-  }
-
-  private <T> ImmutableList<T> append(List<T> items, T item) {
-    ImmutableList.Builder<T> builder = ImmutableList.builder();
-    builder.addAll(items);
-    builder.add(item);
-    return builder.build();
   }
 }
