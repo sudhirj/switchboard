@@ -31,7 +31,8 @@ public class BoardTest {
   @Test
   public void availableChoices() throws Exception {
     assertEquals(5, board.availableChoices().collect(toImmutableSet()).size());
-    Choice firstChoice = ImmutableList.copyOf(board.availableChoices().collect(toImmutableSet())).get(0);
+    Choice firstChoice =
+        ImmutableList.copyOf(board.availableChoices().collect(toImmutableSet())).get(0);
     Board newBoard = board.choose(firstChoice);
     assertEquals(4, newBoard.availableChoices().collect(toImmutableSet()).size());
     assertFalse(newBoard.availableChoices().collect(toImmutableSet()).contains(firstChoice));
@@ -79,9 +80,11 @@ public class BoardTest {
   public void history() throws Exception {
     Board firstBoard = board;
     Board secondBoard = firstBoard.choose(firstBoard.availableChoices().iterator().next());
-    assertEquals(ImmutableList.of(firstBoard), ImmutableList.copyOf(secondBoard.history()));
+    assertEquals(
+        ImmutableList.of(secondBoard, firstBoard), ImmutableList.copyOf(secondBoard.history()));
     Board thirdBoard = secondBoard.choose(secondBoard.availableChoices().iterator().next());
     assertEquals(
-        ImmutableList.of(firstBoard, secondBoard), ImmutableList.copyOf(thirdBoard.history()));
+        ImmutableList.of(thirdBoard, secondBoard, firstBoard),
+        ImmutableList.copyOf(thirdBoard.history()));
   }
 }

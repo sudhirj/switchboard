@@ -1,5 +1,6 @@
 package io.sudhir.switchboard.boards;
 
+import static com.google.common.collect.ImmutableList.toImmutableList;
 import static com.google.common.collect.ImmutableSet.toImmutableSet;
 
 import com.google.auto.value.AutoValue;
@@ -21,24 +22,44 @@ abstract class ImmutableBoard implements Board {
     return new AutoValue_ImmutableBoard(
         ImmutableSet.copyOf(supplies),
         ImmutableSet.copyOf(demands),
-        ImmutableList.of(),
-        ImmutableList.of());
+        Optional.empty(),
+        Optional.empty());
   }
 
   abstract Set<Supply> supplies();
 
   abstract Set<Demand> demands();
 
-  @Override
-  public abstract List<Choice> choicesMade();
+  abstract Optional<Choice> choice();
+
+  abstract Optional<ImmutableBoard> board();
 
   @Override
-  public abstract List<Board> history();
+  public List<Choice> choicesMade() {
+    return choiceStream().collect(toImmutableList());
+  }
+
+  private Stream<Choice> choiceStream() {
+    return historyStream()
+        .map(ImmutableBoard::choice)
+        .filter(Optional::isPresent)
+        .map(Optional::get);
+  }
+
+  @Override
+  public List<? extends Board> history() {
+    return historyStream().collect(toImmutableList());
+  }
+
+  private Stream<ImmutableBoard> historyStream() {
+    return Stream.iterate(Optional.of(this), Optional::isPresent, board -> board.get().board())
+        .map(Optional::get);
+  }
 
   @Override
   public Board choose(Choice choice) {
     return new AutoValue_ImmutableBoard(
-        supplies(), demands(), append(choicesMade(), choice), append(history(), this));
+        supplies(), demands(), Optional.of(choice), Optional.of(this));
   }
 
   @Override

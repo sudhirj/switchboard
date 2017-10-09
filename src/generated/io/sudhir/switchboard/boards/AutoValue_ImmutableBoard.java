@@ -4,21 +4,21 @@ package io.sudhir.switchboard.boards;
 import io.sudhir.switchboard.Choice;
 import io.sudhir.switchboard.Demand;
 import io.sudhir.switchboard.Supply;
-import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
  final class AutoValue_ImmutableBoard extends ImmutableBoard {
 
   private final Set<Supply> supplies;
   private final Set<Demand> demands;
-  private final List<Choice> choicesMade;
-  private final List<Board> history;
+  private final Optional<Choice> choice;
+  private final Optional<ImmutableBoard> board;
 
   AutoValue_ImmutableBoard(
       Set<Supply> supplies,
       Set<Demand> demands,
-      List<Choice> choicesMade,
-      List<Board> history) {
+      Optional<Choice> choice,
+      Optional<ImmutableBoard> board) {
     if (supplies == null) {
       throw new NullPointerException("Null supplies");
     }
@@ -27,14 +27,14 @@ import java.util.Set;
       throw new NullPointerException("Null demands");
     }
     this.demands = demands;
-    if (choicesMade == null) {
-      throw new NullPointerException("Null choicesMade");
+    if (choice == null) {
+      throw new NullPointerException("Null choice");
     }
-    this.choicesMade = choicesMade;
-    if (history == null) {
-      throw new NullPointerException("Null history");
+    this.choice = choice;
+    if (board == null) {
+      throw new NullPointerException("Null board");
     }
-    this.history = history;
+    this.board = board;
   }
 
   @Override
@@ -48,13 +48,13 @@ import java.util.Set;
   }
 
   @Override
-  public List<Choice> choicesMade() {
-    return choicesMade;
+  Optional<Choice> choice() {
+    return choice;
   }
 
   @Override
-  public List<Board> history() {
-    return history;
+  Optional<ImmutableBoard> board() {
+    return board;
   }
 
   @Override
@@ -62,8 +62,8 @@ import java.util.Set;
     return "ImmutableBoard{"
         + "supplies=" + supplies + ", "
         + "demands=" + demands + ", "
-        + "choicesMade=" + choicesMade + ", "
-        + "history=" + history
+        + "choice=" + choice + ", "
+        + "board=" + board
         + "}";
   }
 
@@ -76,8 +76,8 @@ import java.util.Set;
       ImmutableBoard that = (ImmutableBoard) o;
       return (this.supplies.equals(that.supplies()))
            && (this.demands.equals(that.demands()))
-           && (this.choicesMade.equals(that.choicesMade()))
-           && (this.history.equals(that.history()));
+           && (this.choice.equals(that.choice()))
+           && (this.board.equals(that.board()));
     }
     return false;
   }
@@ -90,9 +90,9 @@ import java.util.Set;
     h *= 1000003;
     h ^= this.demands.hashCode();
     h *= 1000003;
-    h ^= this.choicesMade.hashCode();
+    h ^= this.choice.hashCode();
     h *= 1000003;
-    h ^= this.history.hashCode();
+    h ^= this.board.hashCode();
     return h;
   }
 
