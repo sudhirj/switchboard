@@ -30,7 +30,7 @@ public interface Board {
 
   Optional<Choice> choice();
 
-  Optional<ImmutableBoard> board();
+  Optional<Board> board();
 
   double score();
 

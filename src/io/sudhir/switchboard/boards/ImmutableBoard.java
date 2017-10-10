@@ -32,7 +32,7 @@ abstract class ImmutableBoard implements Board {
   public abstract Optional<Choice> choice();
 
   @Override
-  public abstract Optional<ImmutableBoard> board();
+  public abstract Optional<Board> board();
 
   @Override
   public Stream<Choice> choicesMade() {
@@ -41,7 +41,8 @@ abstract class ImmutableBoard implements Board {
 
   @Override
   public Stream<Board> history() {
-    return Stream.iterate(Optional.of(this), Optional::isPresent, board -> board.get().board())
+    return Stream.iterate(
+        Optional.<Board>of(this), Optional::isPresent, board -> board.get().board())
         .map(Optional::get);
   }
 
