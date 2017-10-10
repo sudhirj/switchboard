@@ -32,7 +32,7 @@ public class PlayerTest {
     Choice optimisticChoice =
         new UnreasonablyOptimisticPlayer().bestChoiceFor(board, Goal.MINIMIZE()).get();
     assertNotNull(optimisticChoice);
-//    assertEquals(optimizingSupply, optimisticChoice.supply());
+    assertEquals(optimizingSupply, optimisticChoice.supply());
 
     Choice greedyChoice = new GreedyPlayer().bestChoiceFor(board, Goal.MINIMIZE()).get();
     assertNotNull(greedyChoice);
