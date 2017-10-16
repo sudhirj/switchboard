@@ -12,13 +12,13 @@ import java.util.Set;
   private final Set<Supply> supplies;
   private final Set<Demand> demands;
   private final Optional<Choice> choice;
-  private final Optional<ImmutableBoard> board;
+  private final Optional<Board> board;
 
   AutoValue_ImmutableBoard(
       Set<Supply> supplies,
       Set<Demand> demands,
       Optional<Choice> choice,
-      Optional<ImmutableBoard> board) {
+      Optional<Board> board) {
     if (supplies == null) {
       throw new NullPointerException("Null supplies");
     }
@@ -53,7 +53,7 @@ import java.util.Set;
   }
 
   @Override
-  public Optional<ImmutableBoard> board() {
+  public Optional<Board> board() {
     return board;
   }
 
