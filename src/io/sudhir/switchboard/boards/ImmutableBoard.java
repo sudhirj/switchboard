@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
+import javax.annotation.Nullable;
 
 @AutoValue
 abstract class ImmutableBoard implements Board {
@@ -29,10 +30,12 @@ abstract class ImmutableBoard implements Board {
   abstract Set<Demand> demands();
 
   @Override
-  public abstract Optional<Choice> choice();
+  @Nullable
+  public abstract Optional<Board> board();
 
   @Override
-  public abstract Optional<Board> board();
+  @Nullable
+  public abstract Optional<Choice> choice();
 
   @Override
   public Stream<Choice> choicesMade() {
@@ -49,7 +52,7 @@ abstract class ImmutableBoard implements Board {
   @Override
   public Board choose(Choice choice) {
     return new AutoValue_ImmutableBoard(
-        supplies(), demands(), Optional.of(choice), Optional.of(this));
+        supplies(), demands(), Optional.of(this), Optional.of(choice));
   }
 
   @Override
