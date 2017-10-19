@@ -9,47 +9,46 @@ import io.sudhir.switchboard.Choice;
 import io.sudhir.switchboard.Demand;
 import io.sudhir.switchboard.Supply;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Stream;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 @AutoValue
 abstract class ImmutableBoard implements Board {
 
   static ImmutableBoard create(Collection<Supply> supplies, Collection<Demand> demands) {
     return new AutoValue_ImmutableBoard(
-        ImmutableSet.copyOf(supplies),
-        ImmutableSet.copyOf(demands),
-        Optional.empty(),
-        Optional.empty());
+        ImmutableSet.copyOf(supplies), ImmutableSet.copyOf(demands), null, null);
   }
 
-  abstract Set<Supply> supplies();
+  abstract ImmutableSet<Supply> supplies();
 
-  abstract Set<Demand> demands();
+  abstract ImmutableSet<Demand> demands();
 
-  @Override
-  public abstract Optional<Choice> choice();
+  @Nullable
+  abstract Choice choice();
 
-  @Override
-  public abstract Optional<Board> board();
+  @Nullable
+  abstract ImmutableBoard board();
 
   @Override
   public Stream<Choice> choicesMade() {
-    return history().map(Board::choice).filter(Optional::isPresent).map(Optional::get);
+    return historyStream().map(ImmutableBoard::choice).filter(Objects::nonNull);
   }
 
   @Override
-  public Stream<Board> history() {
-    return Stream.iterate(
-        Optional.<Board>of(this), Optional::isPresent, board -> board.get().board())
-        .map(Optional::get);
+  public Stream<? extends Board> history() {
+    return historyStream();
+  }
+
+  private Stream<ImmutableBoard> historyStream() {
+    return Stream.iterate(this, Objects::nonNull, ImmutableBoard::board);
   }
 
   @Override
   public Board choose(Choice choice) {
-    return new AutoValue_ImmutableBoard(
-        supplies(), demands(), Optional.of(choice), Optional.of(this));
+    return new AutoValue_ImmutableBoard(supplies(), demands(), choice, this);
   }
 
   @Override

@@ -1,24 +1,24 @@
 
 package io.sudhir.switchboard.boards;
 
+import com.google.common.collect.ImmutableSet;
 import io.sudhir.switchboard.Choice;
 import io.sudhir.switchboard.Demand;
 import io.sudhir.switchboard.Supply;
-import java.util.Optional;
-import java.util.Set;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
  final class AutoValue_ImmutableBoard extends ImmutableBoard {
 
-  private final Set<Supply> supplies;
-  private final Set<Demand> demands;
-  private final Optional<Choice> choice;
-  private final Optional<Board> board;
+   private final ImmutableSet<Supply> supplies;
+   private final ImmutableSet<Demand> demands;
+   private final @Nullable Choice choice;
+   private final @Nullable ImmutableBoard board;
 
   AutoValue_ImmutableBoard(
-      Set<Supply> supplies,
-      Set<Demand> demands,
-      Optional<Choice> choice,
-      Optional<Board> board) {
+      ImmutableSet<Supply> supplies,
+      ImmutableSet<Demand> demands,
+      @Nullable Choice choice,
+      @Nullable ImmutableBoard board) {
     if (supplies == null) {
       throw new NullPointerException("Null supplies");
     }
@@ -27,33 +27,27 @@ import java.util.Set;
       throw new NullPointerException("Null demands");
     }
     this.demands = demands;
-    if (choice == null) {
-      throw new NullPointerException("Null choice");
-    }
     this.choice = choice;
-    if (board == null) {
-      throw new NullPointerException("Null board");
-    }
     this.board = board;
   }
 
   @Override
-  Set<Supply> supplies() {
+  ImmutableSet<Supply> supplies() {
     return supplies;
   }
 
   @Override
-  Set<Demand> demands() {
+  ImmutableSet<Demand> demands() {
     return demands;
   }
 
   @Override
-  public Optional<Choice> choice() {
+  @Nullable Choice choice() {
     return choice;
   }
 
   @Override
-  public Optional<Board> board() {
+  @Nullable ImmutableBoard board() {
     return board;
   }
 
@@ -76,8 +70,8 @@ import java.util.Set;
       ImmutableBoard that = (ImmutableBoard) o;
       return (this.supplies.equals(that.supplies()))
            && (this.demands.equals(that.demands()))
-           && (this.choice.equals(that.choice()))
-           && (this.board.equals(that.board()));
+          && ((this.choice == null) ? (that.choice() == null) : this.choice.equals(that.choice()))
+          && ((this.board == null) ? (that.board() == null) : this.board.equals(that.board()));
     }
     return false;
   }
@@ -90,9 +84,9 @@ import java.util.Set;
     h *= 1000003;
     h ^= this.demands.hashCode();
     h *= 1000003;
-    h ^= this.choice.hashCode();
+    h ^= (choice == null) ? 0 : this.choice.hashCode();
     h *= 1000003;
-    h ^= this.board.hashCode();
+    h ^= (board == null) ? 0 : this.board.hashCode();
     return h;
   }
 

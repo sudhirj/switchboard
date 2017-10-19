@@ -13,5 +13,6 @@
     <orderEntry type="library" name="junit:junit:4.12" level="project" />
     <orderEntry type="library" name="com.google.auto.value:auto-value:1.5.1" level="project" />
     <orderEntry type="library" name="com.google.guava:guava:23.1-jre" level="project" />
+    <orderEntry type="library" name="org.checkerframework:checker-qual:1.9.10" level="project" />
   </component>
 </module>
