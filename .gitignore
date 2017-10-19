@@ -16,3 +16,6 @@
 
 # IntelliJ
 out/
+
+# Other
+.DS_Store
