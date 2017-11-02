@@ -9,10 +9,10 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
  final class AutoValue_ImmutableBoard extends ImmutableBoard {
 
-   private final ImmutableSet<Supply> supplies;
-   private final ImmutableSet<Demand> demands;
-   private final @Nullable Choice choice;
-   private final @Nullable ImmutableBoard board;
+  private final ImmutableSet<Supply> supplies;
+  private final ImmutableSet<Demand> demands;
+  private final @Nullable Choice choice;
+  private final @Nullable ImmutableBoard board;
 
   AutoValue_ImmutableBoard(
       ImmutableSet<Supply> supplies,
@@ -70,8 +70,8 @@ import org.checkerframework.checker.nullness.qual.Nullable;
       ImmutableBoard that = (ImmutableBoard) o;
       return (this.supplies.equals(that.supplies()))
            && (this.demands.equals(that.demands()))
-          && ((this.choice == null) ? (that.choice() == null) : this.choice.equals(that.choice()))
-          && ((this.board == null) ? (that.board() == null) : this.board.equals(that.board()));
+           && ((this.choice == null) ? (that.choice() == null) : this.choice.equals(that.choice()))
+           && ((this.board == null) ? (that.board() == null) : this.board.equals(that.board()));
     }
     return false;
   }

@@ -53,6 +53,15 @@ abstract class ImmutableBoard implements Board {
   }
 
   @Override
+  public Board expand(Collection<? extends Demand> newDemands) {
+    return new AutoValue_ImmutableBoard(
+        supplies(),
+        ImmutableSet.copyOf(Sets.union(demands(), ImmutableSet.copyOf(newDemands))),
+        choice(),
+        board());
+  }
+
+  @Override
   public boolean isComplete() {
     return !pendingDemands().findAny().isPresent();
   }

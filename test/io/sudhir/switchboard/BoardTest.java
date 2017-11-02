@@ -12,6 +12,7 @@ import io.sudhir.switchboard.boards.Board;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,6 +29,22 @@ public class BoardTest {
     supplies = types.stream().map(ConstantSupply::create).collect(Collectors.toList());
     demands = types.stream().map(ConstantDemand::create).collect(Collectors.toList());
     board = Board.create(supplies, demands);
+  }
+
+  @Test
+  public void expansion() throws Exception {
+    Board currentBoard = board;
+    while (currentBoard.availableChoices().findAny().isPresent()) {
+      currentBoard = currentBoard.choose(currentBoard.availableChoices().iterator().next());
+    }
+    assertTrue(currentBoard.isComplete());
+    Board expandedBoard = currentBoard.expand(
+        Set.of(ConstantDemand.create("x"), ConstantDemand.create("y"), ConstantDemand.create("z")));
+    assertFalse(expandedBoard.isComplete());
+    assertEquals(3, expandedBoard.pendingDemands().collect(toImmutableList()).size());
+    assertEquals(currentBoard.score(), expandedBoard.score(), 0.01);
+    assertEquals(currentBoard.boardScore(), expandedBoard.boardScore(), 0.01);
+    assertEquals(currentBoard.choicesMade().collect(toImmutableSet()), expandedBoard.choicesMade().collect(toImmutableSet()));
   }
 
   @Test
