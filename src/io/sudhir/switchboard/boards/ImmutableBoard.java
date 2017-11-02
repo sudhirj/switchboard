@@ -17,7 +17,8 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 @AutoValue
 abstract class ImmutableBoard implements Board {
 
-  static ImmutableBoard create(Collection<Supply> supplies, Collection<Demand> demands) {
+  static ImmutableBoard create(Collection<? extends Supply> supplies,
+      Collection<? extends Demand> demands) {
     return new AutoValue_ImmutableBoard(
         ImmutableSet.copyOf(supplies), ImmutableSet.copyOf(demands), null, null);
   }

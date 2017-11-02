@@ -6,5 +6,6 @@ import io.sudhir.switchboard.boards.Board;
 import java.util.Optional;
 
 public interface Player {
+
   Optional<Choice> bestChoiceFor(Board board, Goal goal);
 }

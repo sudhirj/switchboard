@@ -22,6 +22,7 @@ import java.util.stream.Stream;
 import org.junit.Test;
 
 public class PlayerTest {
+
   @Test
   public void bestChoiceFor() throws Exception {
     Supply constantSupply = ConstantSupply.create("a");

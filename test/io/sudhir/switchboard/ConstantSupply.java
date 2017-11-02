@@ -7,6 +7,7 @@ import java.util.stream.Stream;
 
 @AutoValue
 public abstract class ConstantSupply implements Supply {
+
   public static ConstantSupply create(String type) {
     return new AutoValue_ConstantSupply(type);
   }

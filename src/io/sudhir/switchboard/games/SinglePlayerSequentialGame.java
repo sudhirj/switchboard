@@ -7,6 +7,7 @@ import io.sudhir.switchboard.players.Player;
 import java.util.Optional;
 
 public class SinglePlayerSequentialGame implements Game {
+
   private final Player player;
 
   public SinglePlayerSequentialGame(Player player) {

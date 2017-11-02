@@ -8,6 +8,7 @@ import java.util.stream.Stream;
 
 @AutoValue
 public abstract class ReducingRandomSupply implements Supply {
+
   public static ReducingRandomSupply create(String type) {
     return new AutoValue_ReducingRandomSupply(type);
   }

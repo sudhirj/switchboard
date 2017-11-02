@@ -6,6 +6,7 @@ import io.sudhir.switchboard.boards.Board;
 import java.util.Optional;
 
 public class GreedyPlayer implements Player {
+
   @Override
   public Optional<Choice> bestChoiceFor(Board board, Goal goal) {
     return board

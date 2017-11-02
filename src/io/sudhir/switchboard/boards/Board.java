@@ -7,7 +7,8 @@ import java.util.Collection;
 import java.util.stream.Stream;
 
 public interface Board {
-  static Board create(Collection<Supply> supplies, Collection<Demand> demands) {
+
+  static Board create(Collection<? extends Supply> supplies, Collection<? extends Demand> demands) {
     return ImmutableBoard.create(supplies, demands);
   }
 

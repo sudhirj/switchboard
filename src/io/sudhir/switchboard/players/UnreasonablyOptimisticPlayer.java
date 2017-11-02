@@ -11,7 +11,8 @@ import java.util.concurrent.ConcurrentSkipListMap;
 
 public class UnreasonablyOptimisticPlayer implements Player {
 
-  UnreasonablyOptimisticPlayer() {}
+  UnreasonablyOptimisticPlayer() {
+  }
 
   @Override
   public Optional<Choice> bestChoiceFor(Board board, Goal goal) {

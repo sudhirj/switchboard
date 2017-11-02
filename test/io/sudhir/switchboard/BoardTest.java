@@ -17,6 +17,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class BoardTest {
+
   private List<Demand> demands;
   private List<Supply> supplies;
   private Board board;

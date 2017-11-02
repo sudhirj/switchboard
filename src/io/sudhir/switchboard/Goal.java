@@ -1,7 +1,6 @@
 package io.sudhir.switchboard;
 
 import io.sudhir.switchboard.boards.Board;
-
 import java.util.Comparator;
 import java.util.function.Function;
 
@@ -36,6 +35,7 @@ enum Goals implements Goal {
 }
 
 public interface Goal {
+
   static Goal MAXIMIZE() {
     return Goals.MAXIMIZE;
   }
