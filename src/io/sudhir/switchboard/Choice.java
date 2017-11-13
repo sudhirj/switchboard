@@ -4,7 +4,7 @@ import com.google.auto.value.AutoValue;
 
 public interface Choice {
 
-  static Choice create(Supply supply, Demand demand, int score) {
+  static Choice create(Supply supply, Demand demand, double score) {
     return new AutoValue_ImmutableChoice(supply, demand, score);
   }
 
