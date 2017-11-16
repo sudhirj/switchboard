@@ -8,6 +8,7 @@ import static org.junit.Assert.assertTrue;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
 import io.sudhir.switchboard.boards.Board;
 import java.util.Arrays;
 import java.util.Collection;
@@ -44,7 +45,8 @@ public class BoardTest {
     assertEquals(3, expandedBoard.pendingDemands().collect(toImmutableList()).size());
     assertEquals(currentBoard.score(), expandedBoard.score(), 0.01);
     assertEquals(currentBoard.boardScore(), expandedBoard.boardScore(), 0.01);
-    assertEquals(currentBoard.choicesMade().collect(toImmutableSet()), expandedBoard.choicesMade().collect(toImmutableSet()));
+    assertEquals(currentBoard.choicesMade().collect(toImmutableSet()),
+        expandedBoard.choicesMade().collect(toImmutableSet()));
   }
 
   @Test
@@ -93,6 +95,18 @@ public class BoardTest {
     assertTrue(board.pendingDemands().collect(toImmutableSet()).contains(firstChoice.demand()));
     Board newBoard = board.choose(firstChoice);
     assertFalse(newBoard.pendingDemands().collect(toImmutableSet()).contains(firstChoice.demand()));
+  }
+
+  @Test
+  public void viableDemands() throws Exception {
+    Board partiallyImpossibleBoard = board.expand(Set.of(ConstantDemand.create("IMPOSSIBLE")));
+    assertEquals(demands.size() + 1,
+        partiallyImpossibleBoard.pendingDemands().collect(toImmutableSet()).size());
+    assertEquals(demands.size(),
+        partiallyImpossibleBoard.viableDemands().collect(toImmutableSet()).size());
+    assertEquals(Set.of(ConstantDemand.create("IMPOSSIBLE")),
+        Sets.difference(partiallyImpossibleBoard.pendingDemands().collect(toImmutableSet()),
+            partiallyImpossibleBoard.viableDemands().collect(toImmutableSet())));
   }
 
   @Test

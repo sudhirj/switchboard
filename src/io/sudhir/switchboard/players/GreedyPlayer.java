@@ -10,7 +10,7 @@ public class GreedyPlayer implements Player {
   @Override
   public Optional<Choice> bestChoiceFor(Board board, Goal goal) {
     return board
-        .pendingDemands()
+        .viableDemands()
         .limit(1)
         .flatMap(board::availableChoices)
         .max(goal.choiceComparator());

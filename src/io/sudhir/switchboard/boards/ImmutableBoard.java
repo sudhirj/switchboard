@@ -92,6 +92,11 @@ abstract class ImmutableBoard implements Board {
   }
 
   @Override
+  public Stream<Demand> viableDemands() {
+    return pendingDemands().filter(demand -> availableChoices(demand).findAny().isPresent());
+  }
+
+  @Override
   public double score() {
     return choicesMade().parallel().mapToDouble(Choice::score).sum();
   }
