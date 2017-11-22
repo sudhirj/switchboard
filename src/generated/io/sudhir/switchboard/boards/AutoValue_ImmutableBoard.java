@@ -12,13 +12,13 @@ import org.checkerframework.checker.nullness.qual.Nullable;
   private final ImmutableSet<Supply> supplies;
   private final ImmutableSet<Demand> demands;
   private final @Nullable Choice choice;
-  private final @Nullable ImmutableBoard board;
+   private final @Nullable ImmutableBoard parentBoard;
 
   AutoValue_ImmutableBoard(
       ImmutableSet<Supply> supplies,
       ImmutableSet<Demand> demands,
       @Nullable Choice choice,
-      @Nullable ImmutableBoard board) {
+      @Nullable ImmutableBoard parentBoard) {
     if (supplies == null) {
       throw new NullPointerException("Null supplies");
     }
@@ -28,7 +28,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
     }
     this.demands = demands;
     this.choice = choice;
-    this.board = board;
+    this.parentBoard = parentBoard;
   }
 
   @Override
@@ -47,8 +47,8 @@ import org.checkerframework.checker.nullness.qual.Nullable;
   }
 
   @Override
-  @Nullable ImmutableBoard board() {
-    return board;
+  @Nullable ImmutableBoard parentBoard() {
+    return parentBoard;
   }
 
   @Override
@@ -57,7 +57,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
         + "supplies=" + supplies + ", "
         + "demands=" + demands + ", "
         + "choice=" + choice + ", "
-        + "board=" + board
+        + "parentBoard=" + parentBoard
         + "}";
   }
 
@@ -71,7 +71,8 @@ import org.checkerframework.checker.nullness.qual.Nullable;
       return (this.supplies.equals(that.supplies()))
            && (this.demands.equals(that.demands()))
            && ((this.choice == null) ? (that.choice() == null) : this.choice.equals(that.choice()))
-           && ((this.board == null) ? (that.board() == null) : this.board.equals(that.board()));
+          && ((this.parentBoard == null) ? (that.parentBoard() == null)
+          : this.parentBoard.equals(that.parentBoard()));
     }
     return false;
   }
@@ -86,7 +87,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
     h *= 1000003;
     h ^= (choice == null) ? 0 : this.choice.hashCode();
     h *= 1000003;
-    h ^= (board == null) ? 0 : this.board.hashCode();
+    h ^= (parentBoard == null) ? 0 : this.parentBoard.hashCode();
     return h;
   }
 

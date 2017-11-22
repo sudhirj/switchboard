@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -67,8 +68,23 @@ public class BoardTest {
   }
 
   @Test
+  public void futures() throws Exception {
+    ImmutableSet<Board> futures = board.futures().collect(toImmutableSet());
+    assertTrue(futures.contains(board.choose(board.availableChoices().findFirst().get())));
+    assertEquals(325, futures.size());
+
+    Stream<Board> unitScoreBoards = board.futuresWhile(board1 -> board1.score() < 10);
+    assertEquals(5, unitScoreBoards.collect(toImmutableSet()).size());
+
+    ImmutableSet<Board> impossibleFutures = board.futuresWhile(board1 -> false)
+        .collect(toImmutableSet());
+    assertEquals(0, impossibleFutures.size());
+  }
+
+  @Test
   public void completenessAndScoring() throws Exception {
     Board currentBoard = board;
+    ImmutableSet<Board> futures = board.futures().collect(toImmutableSet());
     assertFalse(currentBoard.isComplete());
     assertTrue(currentBoard.canProceed());
     assertEquals(42 * 5, currentBoard.boardScore(), 0.01);
@@ -78,6 +94,7 @@ public class BoardTest {
       assertTrue(currentBoard.canProceed());
       assertFalse(currentBoard.isComplete());
       currentBoard = currentBoard.choose(currentBoard.availableChoices().iterator().next());
+      assertTrue(futures.contains(currentBoard));
     }
 
     assertTrue(currentBoard.isComplete());

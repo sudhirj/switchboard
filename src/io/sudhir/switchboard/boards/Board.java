@@ -4,6 +4,7 @@ import io.sudhir.switchboard.Choice;
 import io.sudhir.switchboard.Demand;
 import io.sudhir.switchboard.Supply;
 import java.util.Collection;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public interface Board {
@@ -27,6 +28,10 @@ public interface Board {
   Stream<Demand> viableDemands();
 
   Stream<? extends Board> history();
+
+  Stream<Board> futures();
+
+  Stream<Board> futuresWhile(Predicate<Board> predicate);
 
   Stream<Choice> choicesMade();
 

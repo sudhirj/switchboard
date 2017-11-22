@@ -11,6 +11,7 @@ import io.sudhir.switchboard.Supply;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -31,7 +32,7 @@ abstract class ImmutableBoard implements Board {
   abstract Choice choice();
 
   @Nullable
-  abstract ImmutableBoard board();
+  abstract ImmutableBoard parentBoard();
 
   @Override
   public Stream<Choice> choicesMade() {
@@ -43,8 +44,28 @@ abstract class ImmutableBoard implements Board {
     return historyStream();
   }
 
+  @Override
+  public Stream<Board> futuresWhile(Predicate<Board> predicate) {
+    return futuresStream(predicate);
+  }
+
+  @Override
+  public Stream<Board> futures() {
+    return futuresStream(board -> true);
+  }
+
+  private Stream<Board> futuresStream(Predicate<Board> predicate) {
+    if (canProceed() && predicate.test(this)) {
+      return availableChoices().parallel()
+          .flatMap(choice -> Stream
+              .concat(Stream.of(choose(choice)), choose(choice).futuresWhile(predicate)));
+
+    }
+    return Stream.of();
+  }
+
   private Stream<ImmutableBoard> historyStream() {
-    return Stream.iterate(this, Objects::nonNull, ImmutableBoard::board);
+    return Stream.iterate(this, Objects::nonNull, ImmutableBoard::parentBoard);
   }
 
   @Override
@@ -58,7 +79,7 @@ abstract class ImmutableBoard implements Board {
         supplies(),
         ImmutableSet.copyOf(Sets.union(demands(), ImmutableSet.copyOf(newDemands))),
         choice(),
-        board());
+        parentBoard());
   }
 
   @Override
