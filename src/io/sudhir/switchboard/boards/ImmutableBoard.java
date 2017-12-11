@@ -45,20 +45,20 @@ abstract class ImmutableBoard implements Board {
   }
 
   @Override
-  public Stream<Board> futuresWhile(Predicate<Board> predicate) {
-    return futuresStream(predicate);
+  public Stream<Board> exploreWhile(Predicate<Board> predicate) {
+    return explorationStream(predicate);
   }
 
   @Override
-  public Stream<Board> futures() {
-    return futuresStream(board -> true);
+  public Stream<Board> explore() {
+    return explorationStream(board -> true);
   }
 
-  private Stream<Board> futuresStream(Predicate<Board> predicate) {
+  private Stream<Board> explorationStream(Predicate<Board> predicate) {
     if (canProceed() && predicate.test(this)) {
       return availableChoices().parallel()
-          .flatMap(choice -> Stream
-              .concat(Stream.of(choose(choice)), choose(choice).futuresWhile(predicate)));
+          .map(this::choose).flatMap(chosenBoard -> Stream
+              .concat(Stream.of(chosenBoard), chosenBoard.exploreWhile(predicate)));
 
     }
     return Stream.of();

@@ -18,10 +18,12 @@ import org.junit.Test;
 public class GameTest {
 
   private Collection<Player> players;
+  private Board randomBoard;
 
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
     players = ImmutableSet.of(new RandomPlayer(), new GreedyPlayer());
+    randomBoard = TestBoards.RANDOM.board();
   }
 
   @Test
@@ -37,11 +39,10 @@ public class GameTest {
   }
 
   @Test
-  public void benchmarkRunningOnRandomBoard() {
-    Board board = TestBoards.RANDOM.board();
+  public void benchmarkPlayerGameModel() {
     for (Player player : players) {
       Game game = new SinglePlayerSequentialGame(player);
-      game.run(board, Goals.MINIMIZE);
+      game.run(randomBoard, Goals.MINIMIZE);
     }
   }
 }

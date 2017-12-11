@@ -29,9 +29,9 @@ public interface Board {
 
   Stream<? extends Board> history();
 
-  Stream<Board> futures();
+  Stream<Board> explore();
 
-  Stream<Board> futuresWhile(Predicate<Board> predicate);
+  Stream<Board> exploreWhile(Predicate<Board> predicate);
 
   Stream<Choice> choicesMade();
 

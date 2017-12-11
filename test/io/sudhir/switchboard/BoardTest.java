@@ -26,7 +26,7 @@ public class BoardTest {
   private Board board;
 
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
     Collection<String> types = Arrays.asList("a", "b", "c", "d", "e");
     supplies = types.stream().map(ConstantSupply::create).collect(Collectors.toList());
     demands = types.stream().map(ConstantDemand::create).collect(Collectors.toList());
@@ -34,7 +34,7 @@ public class BoardTest {
   }
 
   @Test
-  public void expansion() throws Exception {
+  public void expansion() {
     Board currentBoard = board;
     while (currentBoard.availableChoices().findAny().isPresent()) {
       currentBoard = currentBoard.choose(currentBoard.availableChoices().iterator().next());
@@ -51,7 +51,7 @@ public class BoardTest {
   }
 
   @Test
-  public void availableChoices() throws Exception {
+  public void availableChoices() {
     assertEquals(5, board.availableChoices().collect(toImmutableSet()).size());
     Choice firstChoice =
         ImmutableList.copyOf(board.availableChoices().collect(toImmutableSet())).get(0);
@@ -61,30 +61,30 @@ public class BoardTest {
   }
 
   @Test
-  public void choose() throws Exception {
+  public void choose() {
     Choice firstChoice = board.availableChoices().iterator().next();
     Board newBoard = board.choose(firstChoice);
     assertEquals(ImmutableList.of(firstChoice), newBoard.choicesMade().collect(toImmutableList()));
   }
 
   @Test
-  public void futures() throws Exception {
-    ImmutableSet<Board> futures = board.futures().collect(toImmutableSet());
+  public void exploration() {
+    ImmutableSet<Board> futures = board.explore().collect(toImmutableSet());
     assertTrue(futures.contains(board.choose(board.availableChoices().findFirst().get())));
     assertEquals(325, futures.size());
 
-    Stream<Board> unitScoreBoards = board.futuresWhile(board1 -> board1.score() < 10);
+    Stream<Board> unitScoreBoards = board.exploreWhile(board1 -> board1.score() < 10);
     assertEquals(5, unitScoreBoards.collect(toImmutableSet()).size());
 
-    ImmutableSet<Board> impossibleFutures = board.futuresWhile(board1 -> false)
+    ImmutableSet<Board> impossibleFutures = board.exploreWhile(board1 -> false)
         .collect(toImmutableSet());
     assertEquals(0, impossibleFutures.size());
   }
 
   @Test
-  public void completenessAndScoring() throws Exception {
+  public void completenessAndScoring() {
     Board currentBoard = board;
-    ImmutableSet<Board> futures = board.futures().collect(toImmutableSet());
+    ImmutableSet<Board> futures = board.explore().collect(toImmutableSet());
     assertFalse(currentBoard.isComplete());
     assertTrue(currentBoard.canProceed());
     assertEquals(42 * 5, currentBoard.boardScore(), 0.01);
@@ -104,7 +104,7 @@ public class BoardTest {
   }
 
   @Test
-  public void unmetDemands() throws Exception {
+  public void unmetDemands() {
     assertEquals(
         ImmutableSet.copyOf(board.pendingDemands().collect(toImmutableSet())),
         ImmutableSet.copyOf(demands));
@@ -115,7 +115,7 @@ public class BoardTest {
   }
 
   @Test
-  public void viableDemands() throws Exception {
+  public void viableDemands() {
     Board partiallyImpossibleBoard = board.expand(Set.of(ConstantDemand.create("IMPOSSIBLE")));
     assertEquals(demands.size() + 1,
         partiallyImpossibleBoard.pendingDemands().collect(toImmutableSet()).size());
@@ -127,7 +127,7 @@ public class BoardTest {
   }
 
   @Test
-  public void history() throws Exception {
+  public void history() {
     Board firstBoard = board;
     Board secondBoard = firstBoard.choose(firstBoard.availableChoices().iterator().next());
     assertEquals(
