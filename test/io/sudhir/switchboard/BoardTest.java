@@ -57,6 +57,7 @@ public class BoardTest {
         ImmutableList.copyOf(board.availableChoices().collect(toImmutableSet())).get(0);
     Board newBoard = board.choose(firstChoice);
     assertEquals(4, newBoard.availableChoices().collect(toImmutableSet()).size());
+    assertEquals(1, newBoard.length());
     assertFalse(newBoard.availableChoices().collect(toImmutableSet()).contains(firstChoice));
   }
 
@@ -101,6 +102,7 @@ public class BoardTest {
     assertFalse(currentBoard.canProceed());
     assertEquals(0, currentBoard.boardScore(), 0.01);
     assertEquals(42 * 5, currentBoard.score(), 0.01);
+    assertEquals(5, currentBoard.length());
   }
 
   @Test

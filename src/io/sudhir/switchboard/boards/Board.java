@@ -31,13 +31,15 @@ public interface Board {
 
   Stream<Board> explore();
 
-  Stream<Board> exploreWhile(Predicate<Board> predicate);
+  Stream<Board> exploreWhile(Predicate<Board> explorer);
 
   Stream<Choice> choicesMade();
 
   double score();
 
   double boardScore();
+
+  long length();
 
   Board expand(Collection<? extends Demand> constantDemands);
 }

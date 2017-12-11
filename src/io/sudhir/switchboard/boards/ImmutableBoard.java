@@ -45,8 +45,8 @@ abstract class ImmutableBoard implements Board {
   }
 
   @Override
-  public Stream<Board> exploreWhile(Predicate<Board> predicate) {
-    return explorationStream(predicate);
+  public Stream<Board> exploreWhile(Predicate<Board> explorer) {
+    return explorationStream(explorer);
   }
 
   @Override
@@ -125,5 +125,10 @@ abstract class ImmutableBoard implements Board {
   @Override
   public double boardScore() {
     return availableChoices().mapToDouble(Choice::score).sum();
+  }
+
+  @Override
+  public long length() {
+    return choicesMade().count();
   }
 }
