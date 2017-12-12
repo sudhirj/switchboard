@@ -57,11 +57,9 @@ abstract class ImmutableBoard implements Board {
 
   private Stream<Board> explorationStream(Predicate<Board> predicate) {
     if (predicate.test(this)) {
-      System.out.println("Dive! " + length());
       return availableChoices().parallel()
           .map(this::choose).flatMap(chosenBoard -> Stream
               .concat(Stream.of(chosenBoard), chosenBoard.exploreWhile(predicate)));
-
     }
     return Stream.of();
   }

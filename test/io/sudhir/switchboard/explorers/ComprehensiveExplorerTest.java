@@ -29,7 +29,5 @@ public class ComprehensiveExplorerTest {
     ComprehensiveExplorer explorer = new ComprehensiveExplorer(Goal.MINIMIZE());
     double explorationCount = testBoard.exploreWhile(explorer).count();
     System.out.println("Explored : " + explorationCount);
-    System.out.println(explorer.discoveries().size());
-    System.out.println(explorer.discoveries().first().score());
   }
 }
