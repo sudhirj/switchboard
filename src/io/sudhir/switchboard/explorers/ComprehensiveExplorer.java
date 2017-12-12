@@ -27,11 +27,16 @@ public class ComprehensiveExplorer implements Explorer {
   @Override
   public boolean test(Board board) {
     if (board.canProceed()) {
+      System.out.println("Checking board " + board.length() + " / " + board.score());
+      System.out.println("Currently have " + discoveries.size());
       return noDiscoveriesAvailableForComparison()
           || boardIsMorePromisingThanBestDiscovery(board);
     }
-    discoveries.add(board);
-    return true;
+    if (boardIsMorePromisingThanBestDiscovery(board)) {
+      System.out.println("Discovered " + board.score());
+      discoveries.add(board);
+    }
+    return false;
   }
 
   private boolean boardIsMorePromisingThanBestDiscovery(Board board) {

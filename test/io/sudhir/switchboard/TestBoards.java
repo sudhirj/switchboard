@@ -24,10 +24,10 @@ public enum TestBoards {
       case RANDOM:
         supplies = new ArrayList<>();
         demands = new ArrayList<>();
-        for (Integer i = 1; i < 100; i++) {
+        for (Integer i = 1; i < 10; i++) {
           supplies.add(ReducingRandomSupply.create(i.toString()));
         }
-        for (Integer i = 1; i < 500; i++) {
+        for (Integer i = 1; i < 100; i++) {
           demands.add(ConstantDemand.create(i.toString()));
         }
         break;

@@ -42,7 +42,7 @@ public class GameTest {
   public void benchmarkPlayerGameModel() {
     for (Player player : players) {
       Game game = new SinglePlayerSequentialGame(player);
-      game.run(randomBoard, Goals.MINIMIZE);
+//      game.run(randomBoard, Goals.MINIMIZE);
     }
   }
 }

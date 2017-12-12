@@ -3,6 +3,7 @@ package io.sudhir.switchboard.boards;
 import static com.google.common.collect.ImmutableSet.toImmutableSet;
 
 import com.google.auto.value.AutoValue;
+import com.google.auto.value.extension.memoized.Memoized;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import io.sudhir.switchboard.Choice;
@@ -55,7 +56,8 @@ abstract class ImmutableBoard implements Board {
   }
 
   private Stream<Board> explorationStream(Predicate<Board> predicate) {
-    if (canProceed() && predicate.test(this)) {
+    if (predicate.test(this)) {
+      System.out.println("Dive! " + length());
       return availableChoices().parallel()
           .map(this::choose).flatMap(chosenBoard -> Stream
               .concat(Stream.of(chosenBoard), chosenBoard.exploreWhile(predicate)));
@@ -88,6 +90,7 @@ abstract class ImmutableBoard implements Board {
   }
 
   @Override
+  @Memoized
   public boolean canProceed() {
     return availableChoices().findAny().isPresent();
   }
