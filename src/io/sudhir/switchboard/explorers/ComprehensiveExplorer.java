@@ -26,21 +26,17 @@ public class ComprehensiveExplorer implements Explorer {
 
   @Override
   public boolean test(Board board) {
-    if (board.canProceed()) {
-      return noDiscoveriesAvailableForComparison()
-          || boardIsMorePromisingThanBestDiscovery(board);
-    }
-    if (boardIsMorePromisingThanBestDiscovery(board)) {
-      discoveries.add(board);
+    if (isBetterThanExistingDiscoveries(board)) {
+      if (!board.canProceed()) {
+        discoveries.add(board);
+      }
+      return true;
     }
     return false;
   }
 
-  private boolean boardIsMorePromisingThanBestDiscovery(Board board) {
+  private boolean isBetterThanExistingDiscoveries(Board board) {
     return discoveries.higher(board) == null;
   }
 
-  private boolean noDiscoveriesAvailableForComparison() {
-    return discoveries.size() <= 0;
-  }
 }
