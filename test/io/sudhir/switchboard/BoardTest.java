@@ -72,10 +72,10 @@ public class BoardTest {
   public void exploration() {
     ImmutableSet<Board> futures = board.explore().collect(toImmutableSet());
     assertTrue(futures.contains(board.choose(board.availableChoices().findFirst().get())));
-    assertEquals(325, futures.size());
+    assertEquals(326, futures.size());
 
     Stream<Board> unitScoreBoards = board.exploreWhile(board1 -> board1.score() < 10);
-    assertEquals(5, unitScoreBoards.collect(toImmutableSet()).size());
+    assertEquals(1, unitScoreBoards.collect(toImmutableSet()).size());
 
     ImmutableSet<Board> impossibleFutures = board.exploreWhile(board1 -> false)
         .collect(toImmutableSet());

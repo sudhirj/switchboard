@@ -60,9 +60,8 @@ abstract class ImmutableBoard implements Board {
     // near-DFS. Need to consider iterative options. Can't find a clean lazy
     // non-recursive algo, though.
     if (predicate.test(this)) {
-      return availableChoices().parallel()
-          .map(this::choose).flatMap(chosenBoard -> Stream
-              .concat(Stream.of(chosenBoard), chosenBoard.exploreWhile(predicate)));
+      return Stream.concat(Stream.of(this), availableChoices().parallel()
+          .map(this::choose).flatMap(chosenBoard -> chosenBoard.exploreWhile(predicate)));
     }
     return Stream.of();
   }
