@@ -15,7 +15,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -74,10 +73,12 @@ public class BoardTest {
     assertTrue(futures.contains(board.choose(board.availableChoices().findFirst().get())));
     assertEquals(326, futures.size());
 
-    Stream<Board> unitScoreBoards = board.exploreWhile(board1 -> board1.score() < 10);
-    assertEquals(1, unitScoreBoards.collect(toImmutableSet()).size());
+    ImmutableSet<Board> unitScoreBoards = board.exploreWhile(b -> b.score() < 10)
+        .collect(toImmutableSet());
+    assertTrue(unitScoreBoards.size() > 0);
+    assertTrue(unitScoreBoards.stream().allMatch(b -> b.score() < 10));
 
-    ImmutableSet<Board> impossibleFutures = board.exploreWhile(board1 -> false)
+    ImmutableSet<Board> impossibleFutures = board.exploreWhile(b -> false)
         .collect(toImmutableSet());
     assertEquals(0, impossibleFutures.size());
   }
