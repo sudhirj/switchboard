@@ -39,7 +39,7 @@ public interface Board {
 
   double boardScore();
 
-  long length();
+  long workDone();
 
   Board expand(Collection<? extends Demand> constantDemands);
 }

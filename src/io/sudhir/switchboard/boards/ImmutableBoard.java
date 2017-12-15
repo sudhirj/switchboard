@@ -131,7 +131,7 @@ abstract class ImmutableBoard implements Board {
   }
 
   @Override
-  public long length() {
+  public long workDone() {
     return choicesMade().count();
   }
 }

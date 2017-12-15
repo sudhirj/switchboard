@@ -39,13 +39,18 @@ public class BoardTest {
       currentBoard = currentBoard.choose(currentBoard.availableChoices().iterator().next());
     }
     assertTrue(currentBoard.isComplete());
-    Board expandedBoard = currentBoard.expand(
-        Set.of(ConstantDemand.create("x"), ConstantDemand.create("y"), ConstantDemand.create("z")));
+    Board expandedBoard =
+        currentBoard.expand(
+            Set.of(
+                ConstantDemand.create("x"),
+                ConstantDemand.create("y"),
+                ConstantDemand.create("z")));
     assertFalse(expandedBoard.isComplete());
     assertEquals(3, expandedBoard.pendingDemands().collect(toImmutableList()).size());
     assertEquals(currentBoard.score(), expandedBoard.score(), 0.01);
     assertEquals(currentBoard.boardScore(), expandedBoard.boardScore(), 0.01);
-    assertEquals(currentBoard.choicesMade().collect(toImmutableSet()),
+    assertEquals(
+        currentBoard.choicesMade().collect(toImmutableSet()),
         expandedBoard.choicesMade().collect(toImmutableSet()));
   }
 
@@ -56,7 +61,7 @@ public class BoardTest {
         ImmutableList.copyOf(board.availableChoices().collect(toImmutableSet())).get(0);
     Board newBoard = board.choose(firstChoice);
     assertEquals(4, newBoard.availableChoices().collect(toImmutableSet()).size());
-    assertEquals(1, newBoard.length());
+    assertEquals(1, newBoard.workDone());
     assertFalse(newBoard.availableChoices().collect(toImmutableSet()).contains(firstChoice));
   }
 
@@ -73,13 +78,13 @@ public class BoardTest {
     assertTrue(futures.contains(board.choose(board.availableChoices().findFirst().get())));
     assertEquals(326, futures.size());
 
-    ImmutableSet<Board> unitScoreBoards = board.exploreWhile(b -> b.score() < 10)
-        .collect(toImmutableSet());
+    ImmutableSet<Board> unitScoreBoards =
+        board.exploreWhile(b -> b.score() < 10).collect(toImmutableSet());
     assertTrue(unitScoreBoards.size() > 0);
     assertTrue(unitScoreBoards.stream().allMatch(b -> b.score() < 10));
 
-    ImmutableSet<Board> impossibleFutures = board.exploreWhile(b -> false)
-        .collect(toImmutableSet());
+    ImmutableSet<Board> impossibleFutures =
+        board.exploreWhile(b -> false).collect(toImmutableSet());
     assertEquals(0, impossibleFutures.size());
   }
 
@@ -103,7 +108,7 @@ public class BoardTest {
     assertFalse(currentBoard.canProceed());
     assertEquals(0, currentBoard.boardScore(), 0.01);
     assertEquals(42 * 5, currentBoard.score(), 0.01);
-    assertEquals(5, currentBoard.length());
+    assertEquals(5, currentBoard.workDone());
   }
 
   @Test
@@ -120,12 +125,15 @@ public class BoardTest {
   @Test
   public void viableDemands() {
     Board partiallyImpossibleBoard = board.expand(Set.of(ConstantDemand.create("IMPOSSIBLE")));
-    assertEquals(demands.size() + 1,
+    assertEquals(
+        demands.size() + 1,
         partiallyImpossibleBoard.pendingDemands().collect(toImmutableSet()).size());
-    assertEquals(demands.size(),
-        partiallyImpossibleBoard.viableDemands().collect(toImmutableSet()).size());
-    assertEquals(Set.of(ConstantDemand.create("IMPOSSIBLE")),
-        Sets.difference(partiallyImpossibleBoard.pendingDemands().collect(toImmutableSet()),
+    assertEquals(
+        demands.size(), partiallyImpossibleBoard.viableDemands().collect(toImmutableSet()).size());
+    assertEquals(
+        Set.of(ConstantDemand.create("IMPOSSIBLE")),
+        Sets.difference(
+            partiallyImpossibleBoard.pendingDemands().collect(toImmutableSet()),
             partiallyImpossibleBoard.viableDemands().collect(toImmutableSet())));
   }
 

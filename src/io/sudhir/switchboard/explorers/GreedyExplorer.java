@@ -7,11 +7,11 @@ import java.util.Comparator;
 import java.util.SortedSet;
 import java.util.concurrent.ConcurrentSkipListSet;
 
-public class ComprehensiveExplorer implements Explorer {
+public class GreedyExplorer implements Explorer {
 
   private final ConcurrentSkipListSet<Board> discoveries;
 
-  public ComprehensiveExplorer(Goal goal) {
+  public GreedyExplorer(Goal goal) {
     Comparator<Board> comparator =
         Comparator.comparingLong(Board::workDone).thenComparing(goal.boardComparator());
     this.discoveries = new ConcurrentSkipListSet<>(comparator);
@@ -25,9 +25,7 @@ public class ComprehensiveExplorer implements Explorer {
   @Override
   public boolean test(Board board) {
     if (isBetterThanExistingDiscoveries(board)) {
-      if (!board.canProceed()) {
-        discoveries.add(board);
-      }
+      discoveries.add(board);
       return true;
     }
     return false;
