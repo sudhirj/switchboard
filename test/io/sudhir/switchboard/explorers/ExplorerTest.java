@@ -18,9 +18,16 @@ public class ExplorerTest {
             explorer -> {
               System.out.println("Running : " + explorer.getClass().toString());
               Board testBoard = TestBoards.CONSTANT.board();
-              double explorationCount = testBoard.exploreWhile(explorer).count();
-              double totalCount = testBoard.explore().count();
-              System.out.println(((explorationCount / totalCount) * 100) + "%");
+              long explorationCount = testBoard.exploreWhile(explorer).count();
+              long totalCount = testBoard.explore().count();
+              System.out.println(
+                  "Portion of universe explored: "
+                      + explorationCount
+                      + " / "
+                      + totalCount
+                      + " ("
+                      + ((double) explorationCount / (double) totalCount * 100.0)
+                      + "%)");
               assertTrue(explorer.discoveries().size() > 0);
               Board bestBoard = explorer.discoveries().last();
               assertEquals(210, bestBoard.score(), 0.01);
@@ -36,8 +43,9 @@ public class ExplorerTest {
             explorer -> {
               System.out.println("Running : " + explorer.getClass().toString());
               Board testBoard = TestBoards.RANDOM.board();
-              System.out.println("Explored : " + testBoard.exploreWhile(explorer).count());
-              System.out.println("Discoveries : " + explorer.discoveries().size());
+              long explorationCount = testBoard.exploreWhile(explorer).count();
+              System.out.println(
+                  "Discovery Ratio : " + explorer.discoveries().size() + " / " + explorationCount);
             });
   }
 }
