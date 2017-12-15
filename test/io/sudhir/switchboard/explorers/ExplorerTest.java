@@ -25,6 +25,7 @@ public class ExplorerTest {
               Board bestBoard = explorer.discoveries().last();
               assertEquals(210, bestBoard.score(), 0.01);
               assertEquals(testBoard.pendingDemands().count(), bestBoard.workDone());
+              assertEquals(210, explorer.explore(testBoard).score(), 0.01);
             });
   }
 
