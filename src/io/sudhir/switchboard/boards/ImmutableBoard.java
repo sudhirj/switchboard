@@ -56,9 +56,8 @@ abstract class ImmutableBoard implements Board {
   }
 
   private Stream<Board> explorationStream(Predicate<Board> predicate) {
-    // Currently using recursion and flatMap to descend, to achieve a
-    // near-DFS. Need to consider iterative options. Can't find a clean lazy
-    // non-recursive algo, though.
+    // Currently using recursion and flatMap to descend, use Explorer::explore(Board board)
+    // for a more efficient multicore approach.
     if (predicate.test(this)) {
       return Stream.concat(Stream.of(this), availableChoices().parallel()
           .map(this::choose).flatMap(chosenBoard -> chosenBoard.exploreWhile(predicate)));

@@ -43,9 +43,10 @@ public class ExplorerTest {
             explorer -> {
               System.out.println("Running : " + explorer.getClass().toString());
               Board testBoard = TestBoards.RANDOM.board();
-              long explorationCount = testBoard.exploreWhile(explorer).count();
+              Board bestBoard = explorer.explore(testBoard);
+              System.out.println("Best Board: "+ bestBoard.workDone() + " / "+bestBoard.score());
               System.out.println(
-                  "Discovery Ratio : " + explorer.discoveries().size() + " / " + explorationCount);
+                  "Discoveries : " + explorer.discoveries().size());
             });
   }
 }
