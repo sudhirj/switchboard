@@ -32,6 +32,7 @@ public class GreedyExplorer implements Explorer {
   }
 
   private boolean isBetterThanExistingDiscoveries(Board board) {
-    return discoveries.higher(board) == null;
+    Board betterBoard = discoveries.ceiling(board);
+    return betterBoard == null || betterBoard.workDone() > board.workDone();
   }
 }
