@@ -51,6 +51,11 @@ abstract class ImmutableBoard implements Board {
   }
 
   @Override
+  public String toString(){
+    return "Board: "+workDone() + "/ "+score();
+  }
+
+  @Override
   public Stream<Board> explore() {
     return explorationStream(board -> true);
   }

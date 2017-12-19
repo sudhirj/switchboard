@@ -37,17 +37,36 @@ public class ExplorerTest {
   }
 
   @Test
-  public void benchmark() {
+  public void benchmarkForkJoinExploration() {
     List.of(new ComprehensiveExplorer(Goal.MINIMIZE()), new GreedyExplorer(Goal.MINIMIZE()))
         .forEach(
             explorer -> {
-              System.out.println("Running : " + explorer.getClass().toString());
+              System.out.println("FORKJOIN Running : " + explorer.getClass().toString());
               Board testBoard = TestBoards.RANDOM.board();
               Board bestBoard = explorer.explore(testBoard);
-              System.out.println("Best Board: " + bestBoard.workDone() + " / " + bestBoard.score());
-              System.out.println("Discoveries : " + explorer.discoveries().size());
+              System.out.println("FORKJOIN Best Board: " + bestBoard.workDone() + " / " + bestBoard.score());
+              System.out.println("FORKJOIN Discoveries : " + explorer.discoveries().size());
               assertEquals(199, bestBoard.workDone());
               assertEquals(8366, bestBoard.score(), 0.1);
+
             });
   }
+
+  @Test
+  public void benchmarkStreamExploration() {
+    List.of(new ComprehensiveExplorer(Goal.MINIMIZE()), new GreedyExplorer(Goal.MINIMIZE()))
+        .forEach(
+            explorer -> {
+              System.out.println("STREAM Running : " + explorer.getClass().toString());
+              Board testBoard = TestBoards.RANDOM.board();
+              testBoard.exploreWhile(explorer).count();
+              Board bestBoard = explorer.discoveries().last();
+              System.out.println("STREAM Best Board: " + bestBoard.workDone() + " / " + bestBoard.score());
+              System.out.println("STREAM Discoveries : " + explorer.discoveries().size());
+              assertEquals(199, bestBoard.workDone());
+              assertEquals(8366, bestBoard.score(), 0.1);
+
+            });
+  }
+
 }

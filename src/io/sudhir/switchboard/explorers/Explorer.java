@@ -13,12 +13,15 @@ public interface Explorer extends Predicate<Board> {
 
   default Board explore(Board board) {
     ForkJoinPool pool = new ForkJoinPool();
-    pool.submit(new RecursiveBoardExplorationAction(board, this));
+    if (test(board)) {
+      pool.submit(new RecursiveBoardExplorationAction(board, this));
+    }
     pool.awaitQuiescence(30, TimeUnit.SECONDS);
     return discoveries().isEmpty() ? board : discoveries().last();
   }
 
   class RecursiveBoardExplorationAction extends RecursiveAction {
+
     private final Board board;
     private final Explorer explorer;
 
@@ -29,12 +32,15 @@ public interface Explorer extends Predicate<Board> {
 
     @Override
     protected void compute() {
-      if (explorer.test(board)) {
-        board
-            .availableChoices()
-            .map(board::choose)
-            .forEach(b -> invokeAll(new RecursiveBoardExplorationAction(b, explorer)));
-      }
+      board
+          .availableChoices()
+          .map(board::choose)
+          .forEach(b -> {
+                if (explorer.test(b)) {
+                  invokeAll(new RecursiveBoardExplorationAction(b, explorer));
+                }
+              }
+          );
     }
   }
 }
