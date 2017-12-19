@@ -46,6 +46,8 @@ public class ExplorerTest {
               Board bestBoard = explorer.explore(testBoard);
               System.out.println("Best Board: " + bestBoard.workDone() + " / " + bestBoard.score());
               System.out.println("Discoveries : " + explorer.discoveries().size());
+              assertEquals(199, bestBoard.workDone());
+              assertEquals(8366, bestBoard.score(), 0.1);
             });
   }
 }

@@ -33,12 +33,7 @@ public interface Explorer extends Predicate<Board> {
         board
             .availableChoices()
             .map(board::choose)
-            .forEach(
-                b -> {
-                  if (explorer.test(b)) {
-                    invokeAll(new RecursiveBoardExplorationAction(b, explorer));
-                  }
-                });
+            .forEach(b -> invokeAll(new RecursiveBoardExplorationAction(b, explorer)));
       }
     }
   }
