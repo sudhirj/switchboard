@@ -1,7 +1,6 @@
 package io.sudhir.switchboard.explorers;
 
 import io.sudhir.switchboard.boards.Board;
-import java.time.Duration;
 import java.util.SortedSet;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveAction;
@@ -31,10 +30,16 @@ public interface Explorer extends Predicate<Board> {
     @Override
     protected void compute() {
       if (explorer.test(board)) {
-        board.availableChoices().map(board::choose)
-            .forEach(b -> invokeAll(new RecursiveBoardExplorationAction(b, explorer)));
+        board
+            .availableChoices()
+            .map(board::choose)
+            .forEach(
+                b -> {
+                  if (explorer.test(b)) {
+                    invokeAll(new RecursiveBoardExplorationAction(b, explorer));
+                  }
+                });
       }
     }
   }
 }
-

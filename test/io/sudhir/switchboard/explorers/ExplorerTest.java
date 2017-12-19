@@ -44,9 +44,8 @@ public class ExplorerTest {
               System.out.println("Running : " + explorer.getClass().toString());
               Board testBoard = TestBoards.RANDOM.board();
               Board bestBoard = explorer.explore(testBoard);
-              System.out.println("Best Board: "+ bestBoard.workDone() + " / "+bestBoard.score());
-              System.out.println(
-                  "Discoveries : " + explorer.discoveries().size());
+              System.out.println("Best Board: " + bestBoard.workDone() + " / " + bestBoard.score());
+              System.out.println("Discoveries : " + explorer.discoveries().size());
             });
   }
 }
