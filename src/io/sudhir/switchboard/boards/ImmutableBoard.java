@@ -19,8 +19,8 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 @AutoValue
 abstract class ImmutableBoard implements Board {
 
-  static ImmutableBoard create(Collection<? extends Supply> supplies,
-      Collection<? extends Demand> demands) {
+  static ImmutableBoard create(
+      Collection<? extends Supply> supplies, Collection<? extends Demand> demands) {
     return new AutoValue_ImmutableBoard(
         ImmutableSet.copyOf(supplies), ImmutableSet.copyOf(demands), null, null);
   }
@@ -59,8 +59,12 @@ abstract class ImmutableBoard implements Board {
     // Currently using recursion and flatMap to descend, use Explorer::explore(Board board)
     // for a more efficient multicore approach.
     if (predicate.test(this)) {
-      return Stream.concat(Stream.of(this), availableChoices().parallel()
-          .map(this::choose).flatMap(chosenBoard -> chosenBoard.exploreWhile(predicate)));
+      return Stream.concat(
+          Stream.of(this),
+          availableChoices()
+              .parallel()
+              .map(this::choose)
+              .flatMap(chosenBoard -> chosenBoard.exploreWhile(predicate)));
     }
     return Stream.of();
   }
@@ -120,8 +124,9 @@ abstract class ImmutableBoard implements Board {
   }
 
   @Override
+  @Memoized
   public double score() {
-    return choicesMade().parallel().mapToDouble(Choice::score).sum();
+    return choice() == null ? 0 : choice().score() + parentBoard().score();
   }
 
   @Override
@@ -130,7 +135,8 @@ abstract class ImmutableBoard implements Board {
   }
 
   @Override
+  @Memoized
   public long workDone() {
-    return choicesMade().count();
+    return parentBoard() == null ? 0 : parentBoard().workDone() + 1;
   }
 }
