@@ -4,7 +4,6 @@ import io.sudhir.switchboard.boards.Board;
 import java.util.SortedSet;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveAction;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 
 public interface Explorer extends Predicate<Board> {
@@ -12,11 +11,9 @@ public interface Explorer extends Predicate<Board> {
   SortedSet<Board> discoveries();
 
   default Board explore(Board board) {
-    ForkJoinPool pool = new ForkJoinPool();
     if (test(board)) {
-      pool.submit(new RecursiveBoardExplorationAction(board, this));
+      ForkJoinPool.commonPool().invoke(new RecursiveBoardExplorationAction(board, this));
     }
-    pool.awaitQuiescence(30, TimeUnit.SECONDS);
     return discoveries().isEmpty() ? board : discoveries().last();
   }
 
@@ -35,12 +32,12 @@ public interface Explorer extends Predicate<Board> {
       board
           .availableChoices()
           .map(board::choose)
-          .forEach(b -> {
+          .forEach(
+              b -> {
                 if (explorer.test(b)) {
                   invokeAll(new RecursiveBoardExplorationAction(b, explorer));
                 }
-              }
-          );
+              });
     }
   }
 }
