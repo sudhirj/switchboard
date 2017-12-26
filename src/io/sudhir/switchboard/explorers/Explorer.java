@@ -35,7 +35,7 @@ public interface Explorer extends Predicate<Board> {
           .forEach(
               b -> {
                 if (explorer.test(b)) {
-                  invokeAll(new RecursiveBoardExplorationAction(b, explorer));
+                  new RecursiveBoardExplorationAction(b, explorer).invoke();
                 }
               });
     }
