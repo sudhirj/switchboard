@@ -51,8 +51,8 @@ abstract class ImmutableBoard implements Board {
   }
 
   @Override
-  public String toString(){
-    return "Board: "+workDone() + "/ "+score();
+  public String toString() {
+    return "Board: " + workDone() + "/ " + score();
   }
 
   @Override
@@ -101,6 +101,10 @@ abstract class ImmutableBoard implements Board {
   @Memoized
   public boolean canProceed() {
     return availableChoices().findAny().isPresent();
+  }
+
+  public ImmutableSet<Supply> availableSupplies() {
+    return this.supplies();
   }
 
   @Override

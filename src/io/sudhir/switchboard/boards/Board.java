@@ -1,5 +1,6 @@
 package io.sudhir.switchboard.boards;
 
+import com.google.common.collect.ImmutableSet;
 import io.sudhir.switchboard.Choice;
 import io.sudhir.switchboard.Demand;
 import io.sudhir.switchboard.Supply;
@@ -18,6 +19,8 @@ public interface Board {
   boolean isComplete();
 
   boolean canProceed();
+
+  ImmutableSet<Supply> availableSupplies();
 
   Stream<Choice> availableChoices();
 
