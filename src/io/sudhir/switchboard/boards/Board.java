@@ -1,10 +1,10 @@
 package io.sudhir.switchboard.boards;
 
-import com.google.common.collect.ImmutableSet;
 import io.sudhir.switchboard.Choice;
 import io.sudhir.switchboard.Demand;
 import io.sudhir.switchboard.Supply;
 import java.util.Collection;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -20,7 +20,7 @@ public interface Board {
 
   boolean canProceed();
 
-  ImmutableSet<Supply> availableSupplies();
+  Set<Supply> availableSupplies();
 
   Stream<Choice> availableChoices();
 

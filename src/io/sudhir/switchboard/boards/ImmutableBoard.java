@@ -12,6 +12,7 @@ import io.sudhir.switchboard.Supply;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -103,7 +104,7 @@ abstract class ImmutableBoard implements Board {
     return availableChoices().findAny().isPresent();
   }
 
-  public ImmutableSet<Supply> availableSupplies() {
+  public Set<Supply> availableSupplies() {
     return this.supplies();
   }
 
