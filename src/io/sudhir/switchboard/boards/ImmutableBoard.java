@@ -12,6 +12,7 @@ import io.sudhir.switchboard.Supply;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -51,8 +52,8 @@ abstract class ImmutableBoard implements Board {
   }
 
   @Override
-  public String toString(){
-    return "Board: "+workDone() + "/ "+score();
+  public String toString() {
+    return "Board: " + workDone() + "/ " + score();
   }
 
   @Override
@@ -101,6 +102,10 @@ abstract class ImmutableBoard implements Board {
   @Memoized
   public boolean canProceed() {
     return availableChoices().findAny().isPresent();
+  }
+
+  public Set<Supply> availableSupplies() {
+    return this.supplies();
   }
 
   @Override
