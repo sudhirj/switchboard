@@ -1,16 +1,21 @@
 
 package io.sudhir.switchboard;
 
+import java.util.HashMap;
+import org.checkerframework.checker.nullness.qual.Nullable;
+
  final class AutoValue_ImmutableChoice extends ImmutableChoice {
 
   private final Supply supply;
   private final Demand demand;
   private final double score;
+  private final @Nullable HashMap<String, Double> scoreComponents;
 
   AutoValue_ImmutableChoice(
       Supply supply,
       Demand demand,
-      double score) {
+      double score,
+      @Nullable HashMap<String, Double> scoreComponents) {
     if (supply == null) {
       throw new NullPointerException("Null supply");
     }
@@ -20,6 +25,7 @@ package io.sudhir.switchboard;
     }
     this.demand = demand;
     this.score = score;
+    this.scoreComponents = scoreComponents;
   }
 
   @Override
@@ -38,11 +44,17 @@ package io.sudhir.switchboard;
   }
 
   @Override
+  public @Nullable HashMap<String, Double> scoreComponents() {
+    return scoreComponents;
+  }
+
+  @Override
   public String toString() {
     return "ImmutableChoice{"
         + "supply=" + supply + ", "
         + "demand=" + demand + ", "
-        + "score=" + score
+        + "score=" + score + ", "
+        + "scoreComponents=" + scoreComponents
         + "}";
   }
 
@@ -55,7 +67,8 @@ package io.sudhir.switchboard;
       ImmutableChoice that = (ImmutableChoice) o;
       return (this.supply.equals(that.supply()))
            && (this.demand.equals(that.demand()))
-           && (Double.doubleToLongBits(this.score) == Double.doubleToLongBits(that.score()));
+           && (Double.doubleToLongBits(this.score) == Double.doubleToLongBits(that.score()))
+           && ((this.scoreComponents == null) ? (that.scoreComponents() == null) : this.scoreComponents.equals(that.scoreComponents()));
     }
     return false;
   }
@@ -69,6 +82,8 @@ package io.sudhir.switchboard;
     h ^= this.demand.hashCode();
     h *= 1000003;
     h ^= (int) ((Double.doubleToLongBits(this.score) >>> 32) ^ Double.doubleToLongBits(this.score));
+    h *= 1000003;
+    h ^= (scoreComponents == null) ? 0 : this.scoreComponents.hashCode();
     return h;
   }
 
