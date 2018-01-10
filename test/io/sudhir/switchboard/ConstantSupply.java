@@ -20,7 +20,7 @@ public abstract class ConstantSupply implements Supply {
     if (demand instanceof ConstantDemand) {
       ConstantDemand constantDemand = (ConstantDemand) demand;
       if (Objects.equals(type(), constantDemand.type())) {
-        return Optional.of(Choice.create(this, demand, 42));
+        return Optional.of(Choice.create(this, demand, 42, null));
       }
     }
     return Optional.empty();

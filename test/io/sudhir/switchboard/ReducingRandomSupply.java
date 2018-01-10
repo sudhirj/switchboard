@@ -21,7 +21,8 @@ public abstract class ReducingRandomSupply implements Supply {
             demand,
             commitments.filter(c -> c.supply().equals(this)).collect(toImmutableList()).size() > 0
                 ? 42
-                : 50));
+                : 50,
+            null));
   }
 
   abstract String type();
