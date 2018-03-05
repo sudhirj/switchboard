@@ -1,14 +1,13 @@
 package io.sudhir.switchboard;
 
 import com.google.auto.value.AutoValue;
-import java.util.HashMap;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-public interface Choice {
+public interface Choice<T> {
 
-  static Choice create(Supply supply, Demand demand, double score,
-      @Nullable HashMap<String, Double> scoreComponents) {
-    return new AutoValue_ImmutableChoice(supply, demand, score, scoreComponents);
+  static <T> Choice create(Supply supply, Demand demand, double score,
+      @Nullable T choiceComponents) {
+    return new AutoValue_ImmutableChoice<>(supply, demand, score, choiceComponents);
   }
 
   Supply supply();
@@ -17,11 +16,11 @@ public interface Choice {
 
   double score();
 
-  HashMap<String, Double> scoreComponents();
+  T choiceAttributes();
 }
 
 @AutoValue
-abstract class ImmutableChoice implements Choice {
+abstract class ImmutableChoice<T> implements Choice<T> {
 
   public abstract Supply supply();
 
@@ -30,5 +29,5 @@ abstract class ImmutableChoice implements Choice {
   public abstract double score();
 
   @Nullable
-  public abstract HashMap<String, Double> scoreComponents();
+  public abstract T choiceAttributes();
 }
