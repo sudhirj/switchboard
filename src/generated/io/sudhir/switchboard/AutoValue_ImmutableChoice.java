@@ -1,21 +1,20 @@
 
 package io.sudhir.switchboard;
 
-import java.util.HashMap;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
- final class AutoValue_ImmutableChoice extends ImmutableChoice {
+ final class AutoValue_ImmutableChoice<T> extends ImmutableChoice<T> {
 
   private final Supply supply;
   private final Demand demand;
   private final double score;
-  private final @Nullable HashMap<String, Double> scoreComponents;
+  private final T choiceAttributes;
 
   AutoValue_ImmutableChoice(
       Supply supply,
       Demand demand,
       double score,
-      @Nullable HashMap<String, Double> scoreComponents) {
+      T choiceAttributes) {
     if (supply == null) {
       throw new NullPointerException("Null supply");
     }
@@ -25,7 +24,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
     }
     this.demand = demand;
     this.score = score;
-    this.scoreComponents = scoreComponents;
+    this.choiceAttributes = choiceAttributes;
   }
 
   @Override
@@ -44,8 +43,8 @@ import org.checkerframework.checker.nullness.qual.Nullable;
   }
 
   @Override
-  public @Nullable HashMap<String, Double> scoreComponents() {
-    return scoreComponents;
+  public T choiceAttributes() {
+    return choiceAttributes;
   }
 
   @Override
@@ -54,7 +53,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
         + "supply=" + supply + ", "
         + "demand=" + demand + ", "
         + "score=" + score + ", "
-        + "scoreComponents=" + scoreComponents
+        + "choiceAttributes=" + choiceAttributes
         + "}";
   }
 
@@ -64,11 +63,11 @@ import org.checkerframework.checker.nullness.qual.Nullable;
       return true;
     }
     if (o instanceof ImmutableChoice) {
-      ImmutableChoice that = (ImmutableChoice) o;
+      ImmutableChoice<?> that = (ImmutableChoice<?>) o;
       return (this.supply.equals(that.supply()))
            && (this.demand.equals(that.demand()))
            && (Double.doubleToLongBits(this.score) == Double.doubleToLongBits(that.score()))
-           && ((this.scoreComponents == null) ? (that.scoreComponents() == null) : this.scoreComponents.equals(that.scoreComponents()));
+           && ((this.choiceAttributes == null) ? (that.choiceAttributes() == null) : this.choiceAttributes.equals(that.choiceAttributes()));
     }
     return false;
   }
@@ -83,7 +82,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
     h *= 1000003;
     h ^= (int) ((Double.doubleToLongBits(this.score) >>> 32) ^ Double.doubleToLongBits(this.score));
     h *= 1000003;
-    h ^= (scoreComponents == null) ? 0 : this.scoreComponents.hashCode();
+    h ^= (choiceAttributes == null) ? 0 : this.choiceAttributes.hashCode();
     return h;
   }
 
