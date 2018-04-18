@@ -1,9 +1,9 @@
 package io.sudhir.switchboard;
 
-import java.util.List;
+import com.google.common.collect.ImmutableList;
 import java.util.Optional;
 
 public interface Supply {
 
-  Optional<Choice> estimateFor(Demand demand, List<Choice> commitments);
+  Optional<Choice> estimateFor(Demand demand, ImmutableList<Choice> commitments);
 }

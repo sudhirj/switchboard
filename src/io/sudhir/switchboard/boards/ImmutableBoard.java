@@ -1,21 +1,21 @@
 package io.sudhir.switchboard.boards;
 
+import static com.google.common.collect.ImmutableList.toImmutableList;
 import static com.google.common.collect.ImmutableSet.toImmutableSet;
 
 import com.google.auto.value.AutoValue;
 import com.google.auto.value.extension.memoized.Memoized;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import io.sudhir.switchboard.Choice;
 import io.sudhir.switchboard.Demand;
 import io.sudhir.switchboard.Supply;
 import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -40,9 +40,9 @@ abstract class ImmutableBoard implements Board {
 
   @Override
   @Memoized
-  public List<Choice> choicesMade() {
+  public ImmutableList<Choice> choicesMade() {
     return historyStream().map(ImmutableBoard::choice).filter(Objects::nonNull).collect(
-        Collectors.toList());
+        toImmutableList());
   }
 
   @Override
