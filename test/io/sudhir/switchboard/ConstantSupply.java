@@ -1,9 +1,9 @@
 package io.sudhir.switchboard;
 
 import com.google.auto.value.AutoValue;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 @AutoValue
 public abstract class ConstantSupply implements Supply {
@@ -13,7 +13,7 @@ public abstract class ConstantSupply implements Supply {
   }
 
   @Override
-  public Optional<Choice> estimateFor(Demand demand, Stream<Choice> commitments) {
+  public Optional<Choice> estimateFor(Demand demand, List<Choice> commitments) {
     // Avoiding the casts on supply nodes for their companion demand nodes is far more trouble than
     // it's worth.
     // https://blogs.msdn.microsoft.com/ericlippert/2011/02/03/curiouser-and-curiouser/

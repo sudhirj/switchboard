@@ -3,8 +3,8 @@ package io.sudhir.switchboard;
 import static com.google.common.collect.ImmutableList.toImmutableList;
 
 import com.google.auto.value.AutoValue;
+import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 @AutoValue
 public abstract class ReducingRandomSupply implements Supply {
@@ -14,12 +14,13 @@ public abstract class ReducingRandomSupply implements Supply {
   }
 
   @Override
-  public Optional<Choice> estimateFor(Demand demand, Stream<Choice> commitments) {
+  public Optional<Choice> estimateFor(Demand demand, List<Choice> commitments) {
     return Optional.of(
         Choice.create(
             this,
             demand,
-            commitments.filter(c -> c.supply().equals(this)).collect(toImmutableList()).size() > 0
+            commitments.stream().filter(c -> c.supply().equals(this)).collect(toImmutableList())
+                .size() > 0
                 ? 42
                 : 50,
             null));

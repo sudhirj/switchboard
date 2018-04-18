@@ -10,10 +10,12 @@ import io.sudhir.switchboard.Choice;
 import io.sudhir.switchboard.Demand;
 import io.sudhir.switchboard.Supply;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -37,8 +39,10 @@ abstract class ImmutableBoard implements Board {
   abstract ImmutableBoard parentBoard();
 
   @Override
-  public Stream<Choice> choicesMade() {
-    return historyStream().map(ImmutableBoard::choice).filter(Objects::nonNull);
+  @Memoized
+  public List<Choice> choicesMade() {
+    return historyStream().map(ImmutableBoard::choice).filter(Objects::nonNull).collect(
+        Collectors.toList());
   }
 
   @Override
@@ -124,7 +128,8 @@ abstract class ImmutableBoard implements Board {
 
   @Override
   public Stream<Demand> pendingDemands() {
-    return Sets.difference(demands(), choicesMade().map(Choice::demand).collect(toImmutableSet()))
+    return Sets
+        .difference(demands(), choicesMade().stream().map(Choice::demand).collect(toImmutableSet()))
         .parallelStream();
   }
 
@@ -140,6 +145,7 @@ abstract class ImmutableBoard implements Board {
   }
 
   @Override
+  @Memoized
   public double boardScore() {
     return availableChoices().mapToDouble(Choice::score).sum();
   }

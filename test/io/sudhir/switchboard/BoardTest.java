@@ -50,8 +50,8 @@ public class BoardTest {
     assertEquals(currentBoard.score(), expandedBoard.score(), 0.01);
     assertEquals(currentBoard.boardScore(), expandedBoard.boardScore(), 0.01);
     assertEquals(
-        currentBoard.choicesMade().collect(toImmutableSet()),
-        expandedBoard.choicesMade().collect(toImmutableSet()));
+        currentBoard.choicesMade().stream().collect(toImmutableSet()),
+        expandedBoard.choicesMade().stream().collect(toImmutableSet()));
   }
 
   @Test
@@ -69,7 +69,7 @@ public class BoardTest {
   public void choose() {
     Choice firstChoice = board.availableChoices().iterator().next();
     Board newBoard = board.choose(firstChoice);
-    assertEquals(ImmutableList.of(firstChoice), newBoard.choicesMade().collect(toImmutableList()));
+    assertEquals(ImmutableList.of(firstChoice), newBoard.choicesMade());
   }
 
   @Test
