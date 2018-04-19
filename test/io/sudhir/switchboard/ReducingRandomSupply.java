@@ -3,7 +3,6 @@ package io.sudhir.switchboard;
 import static com.google.common.collect.ImmutableList.toImmutableList;
 
 import com.google.auto.value.AutoValue;
-import com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,7 +14,7 @@ public abstract class ReducingRandomSupply implements Supply {
   }
 
   @Override
-  public Optional<Choice> estimateFor(Demand demand, ImmutableList<Choice> commitments) {
+  public Optional<Choice> estimateFor(Demand demand, List<Choice> commitments) {
     return Optional.of(
         Choice.create(
             this,
