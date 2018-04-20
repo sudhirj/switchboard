@@ -1,9 +1,11 @@
 package io.sudhir.switchboard.boards;
 
+import static com.google.common.collect.ImmutableList.toImmutableList;
 import static com.google.common.collect.ImmutableSet.toImmutableSet;
 
 import com.google.auto.value.AutoValue;
 import com.google.auto.value.extension.memoized.Memoized;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import io.sudhir.switchboard.Choice;
@@ -37,8 +39,10 @@ abstract class ImmutableBoard implements Board {
   abstract ImmutableBoard parentBoard();
 
   @Override
-  public Stream<Choice> choicesMade() {
-    return historyStream().map(ImmutableBoard::choice).filter(Objects::nonNull);
+  @Memoized
+  public ImmutableList<Choice> choicesMade() {
+    return historyStream().map(ImmutableBoard::choice).filter(Objects::nonNull).collect(
+        toImmutableList());
   }
 
   @Override
@@ -124,7 +128,8 @@ abstract class ImmutableBoard implements Board {
 
   @Override
   public Stream<Demand> pendingDemands() {
-    return Sets.difference(demands(), choicesMade().map(Choice::demand).collect(toImmutableSet()))
+    return Sets
+        .difference(demands(), choicesMade().stream().map(Choice::demand).collect(toImmutableSet()))
         .parallelStream();
   }
 
@@ -140,6 +145,7 @@ abstract class ImmutableBoard implements Board {
   }
 
   @Override
+  @Memoized
   public double boardScore() {
     return availableChoices().mapToDouble(Choice::score).sum();
   }

@@ -1,6 +1,5 @@
 package io.sudhir.switchboard;
 
-import static com.google.common.collect.ImmutableList.toImmutableList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -33,7 +32,7 @@ public class GameTest {
       Game game = new SinglePlayerSequentialGame(player);
       Board finishedBoard = game.run(board, Goals.MINIMIZE);
       assertTrue(finishedBoard.isComplete());
-      assertEquals(5, finishedBoard.choicesMade().collect(toImmutableList()).size());
+      assertEquals(5, finishedBoard.choicesMade().size());
       assertEquals(42 * 5, finishedBoard.score(), 0.01);
     }
   }
