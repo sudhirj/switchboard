@@ -19,3 +19,6 @@ out/
 
 # Other
 .DS_Store
+
+src/generated/*
+test/generated/*

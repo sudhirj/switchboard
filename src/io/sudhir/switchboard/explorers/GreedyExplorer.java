@@ -32,13 +32,13 @@ public class GreedyExplorer implements Explorer {
   }
 
   private boolean isBetterThanExistingDiscoveries(Board board) {
-    Board existingDiscovery = equallyGoodOrBetterBoard(board);
+    Board bestExistingDiscovery = equallyGoodOrBetterBoard(board);
     return // Board is better if
         // there is no existing discovery
-        existingDiscovery == null
+        bestExistingDiscovery == null
             ||
             // or if the existing discovery has done more work
-            existingDiscovery.workDone() > board.workDone();
+            bestExistingDiscovery.workDone() > board.workDone();
   }
 
   private Board equallyGoodOrBetterBoard(Board board) {

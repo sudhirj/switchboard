@@ -8,11 +8,15 @@ import java.util.function.Predicate;
 
 public interface Explorer extends Predicate<Board> {
 
+  static ForkJoinPool forkJoinPool() {
+    return ForkJoinPool.commonPool();
+  }
+
   SortedSet<Board> discoveries();
 
   default Board explore(Board board) {
     if (test(board)) {
-      ForkJoinPool.commonPool().invoke(new RecursiveBoardExplorationAction(board, this));
+      forkJoinPool().invoke(new RecursiveBoardExplorationAction(board, this));
     }
     return discoveries().isEmpty() ? board : discoveries().last();
   }
@@ -35,7 +39,7 @@ public interface Explorer extends Predicate<Board> {
           .forEach(
               b -> {
                 if (explorer.test(b)) {
-                  new RecursiveBoardExplorationAction(b, explorer).invoke();
+                  forkJoinPool().invoke(new RecursiveBoardExplorationAction(b, explorer));
                 }
               });
     }
