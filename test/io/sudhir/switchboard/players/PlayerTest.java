@@ -24,7 +24,7 @@ import org.junit.Test;
 public class PlayerTest {
 
   @Test
-  public void bestChoiceFor() throws Exception {
+  public void bestChoiceFor() {
     Supply constantSupply = ConstantSupply.create("a");
     Supply optimizingSupply = ReducingRandomSupply.create("a");
     List<Demand> demands =
@@ -45,7 +45,7 @@ public class PlayerTest {
   }
 
   @Test
-  public void goodChoiceList() throws Exception {
+  public void goodChoiceList() {
     Board board = TestBoards.CONSTANT.board();
     Collection<Choice> greedyChoices =
         board

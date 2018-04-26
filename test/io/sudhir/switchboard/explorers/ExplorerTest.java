@@ -44,7 +44,8 @@ public class ExplorerTest {
               System.out.println("FORKJOIN Running : " + explorer.getClass().toString());
               Board testBoard = TestBoards.RANDOM.board();
               Board bestBoard = explorer.explore(testBoard);
-              System.out.println("FORKJOIN Best Board: " + bestBoard.workDone() + " / " + bestBoard.score());
+              System.out.println(
+                  "FORKJOIN Best Board: " + bestBoard.workDone() + " / " + bestBoard.score());
               System.out.println("FORKJOIN Discoveries : " + explorer.discoveries().size());
               assertEquals(199, bestBoard.workDone());
               assertEquals(8366, bestBoard.score(), 0.1);
@@ -61,7 +62,8 @@ public class ExplorerTest {
               Board testBoard = TestBoards.RANDOM.board();
               testBoard.exploreWhile(explorer).count();
               Board bestBoard = explorer.discoveries().last();
-              System.out.println("STREAM Best Board: " + bestBoard.workDone() + " / " + bestBoard.score());
+              System.out.println(
+                  "STREAM Best Board: " + bestBoard.workDone() + " / " + bestBoard.score());
               System.out.println("STREAM Discoveries : " + explorer.discoveries().size());
               assertEquals(199, bestBoard.workDone());
               assertEquals(8366, bestBoard.score(), 0.1);

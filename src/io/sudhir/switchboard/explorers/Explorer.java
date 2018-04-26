@@ -18,6 +18,7 @@ public interface Explorer extends Predicate<Board> {
     if (test(board)) {
       forkJoinPool().invoke(new RecursiveBoardExplorationAction(board, this));
     }
+    // Assume the sorted set is always sorted in ascending order of preference.
     return discoveries().isEmpty() ? board : discoveries().last();
   }
 
@@ -37,9 +38,9 @@ public interface Explorer extends Predicate<Board> {
           .availableChoices()
           .map(board::choose)
           .forEach(
-              b -> {
-                if (explorer.test(b)) {
-                  forkJoinPool().invoke(new RecursiveBoardExplorationAction(b, explorer));
+              newBoard -> {
+                if (explorer.test(newBoard)) {
+                  forkJoinPool().invoke(new RecursiveBoardExplorationAction(newBoard, explorer));
                 }
               });
     }
