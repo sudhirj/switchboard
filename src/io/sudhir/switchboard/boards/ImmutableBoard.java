@@ -98,6 +98,7 @@ abstract class ImmutableBoard implements Board {
   }
 
   @Override
+  @Memoized
   public boolean isComplete() {
     return !pendingDemands().findAny().isPresent();
   }
