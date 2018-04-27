@@ -7,7 +7,7 @@ import java.util.Comparator;
 import java.util.SortedSet;
 import java.util.concurrent.ConcurrentSkipListSet;
 
-public class ComprehensiveExplorer implements Explorer {
+public class ComprehensiveExplorer extends Explorer {
 
   private final ConcurrentSkipListSet<Board> discoveries;
 

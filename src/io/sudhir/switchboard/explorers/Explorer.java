@@ -6,17 +6,17 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveAction;
 import java.util.function.Predicate;
 
-public interface Explorer extends Predicate<Board> {
+public abstract class Explorer implements Predicate<Board> {
 
-  static ForkJoinPool forkJoinPool() {
+  protected ForkJoinPool forkJoinPool() {
     return ForkJoinPool.commonPool();
   }
 
-  SortedSet<Board> discoveries();
+  public abstract SortedSet<Board> discoveries();
 
-  default Board explore(Board board) {
+  protected Board explore(Board board) {
     if (test(board)) {
-      forkJoinPool().invoke(new RecursiveBoardExplorationAction(board, this));
+      forkJoinPool().invoke(new RecursiveBoardExplorationAction(board));
     }
     // Assume the sorted set is always sorted in ascending order of preference.
     return discoveries().isEmpty() ? board : discoveries().last();
@@ -25,11 +25,9 @@ public interface Explorer extends Predicate<Board> {
   class RecursiveBoardExplorationAction extends RecursiveAction {
 
     private final Board board;
-    private final Explorer explorer;
 
-    RecursiveBoardExplorationAction(Board board, Explorer explorer) {
+    private RecursiveBoardExplorationAction(Board board) {
       this.board = board;
-      this.explorer = explorer;
     }
 
     @Override
@@ -39,8 +37,8 @@ public interface Explorer extends Predicate<Board> {
           .map(board::choose)
           .forEach(
               newBoard -> {
-                if (explorer.test(newBoard)) {
-                  forkJoinPool().invoke(new RecursiveBoardExplorationAction(newBoard, explorer));
+                if (Explorer.this.test(newBoard)) {
+                  forkJoinPool().invoke(new RecursiveBoardExplorationAction(newBoard));
                 }
               });
     }

@@ -3,7 +3,7 @@ package io.sudhir.switchboard.explorers;
 import io.sudhir.switchboard.boards.Board;
 import java.util.SortedSet;
 
-public class ToleranceExplorer implements Explorer {
+public class ToleranceExplorer extends Explorer {
 
   @Override
   public SortedSet<Board> discoveries() {
