@@ -49,7 +49,6 @@ public class ExplorerTest {
               System.out.println("FORKJOIN Discoveries : " + explorer.discoveries().size());
               assertEquals(199, bestBoard.workDone());
               assertEquals(8366, bestBoard.score(), 0.1);
-
             });
   }
 
@@ -67,8 +66,6 @@ public class ExplorerTest {
               System.out.println("STREAM Discoveries : " + explorer.discoveries().size());
               assertEquals(199, bestBoard.workDone());
               assertEquals(8366, bestBoard.score(), 0.1);
-
             });
   }
-
 }

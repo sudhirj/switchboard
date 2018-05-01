@@ -5,8 +5,8 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 public interface Choice<T> {
 
-  static <T> Choice create(Supply supply, Demand demand, double score,
-      @Nullable T choiceComponents) {
+  static <T> Choice create(
+      Supply supply, Demand demand, double score, @Nullable T choiceComponents) {
     return new AutoValue_ImmutableChoice<>(supply, demand, score, choiceComponents);
   }
 

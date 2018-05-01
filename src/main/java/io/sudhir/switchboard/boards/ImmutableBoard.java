@@ -41,8 +41,10 @@ abstract class ImmutableBoard implements Board {
   @Override
   @Memoized
   public ImmutableList<Choice> choicesMade() {
-    return historyStream().map(ImmutableBoard::choice).filter(Objects::nonNull).collect(
-        toImmutableList());
+    return historyStream()
+        .map(ImmutableBoard::choice)
+        .filter(Objects::nonNull)
+        .collect(toImmutableList());
   }
 
   @Override
@@ -129,8 +131,8 @@ abstract class ImmutableBoard implements Board {
 
   @Override
   public Stream<Demand> pendingDemands() {
-    return Sets
-        .difference(demands(), choicesMade().stream().map(Choice::demand).collect(toImmutableSet()))
+    return Sets.difference(
+            demands(), choicesMade().stream().map(Choice::demand).collect(toImmutableSet()))
         .parallelStream();
   }
 

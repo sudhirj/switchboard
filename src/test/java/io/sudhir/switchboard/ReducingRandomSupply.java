@@ -19,8 +19,12 @@ public abstract class ReducingRandomSupply implements Supply {
         Choice.create(
             this,
             demand,
-            commitments.stream().filter(c -> c.supply().equals(this)).collect(toImmutableList())
-                .size() > 0
+            commitments
+                        .stream()
+                        .filter(c -> c.supply().equals(this))
+                        .collect(toImmutableList())
+                        .size()
+                    > 0
                 ? 42
                 : 50,
             null));

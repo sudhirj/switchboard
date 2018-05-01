@@ -13,8 +13,10 @@ plugins {
 
     id 'idea'
     id 'net.ltgt.apt-idea' version '0.15'
-}
 
+    id 'com.github.sherter.google-java-format' version '0.6'
+}
+sourceCompatibility = 1.9
 idea {
     project {
         // experimental: whether annotation processing will be configured in the IDE; only actually used with the 'idea' task.
