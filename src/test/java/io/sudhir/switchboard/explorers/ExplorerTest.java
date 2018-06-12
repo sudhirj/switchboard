@@ -47,6 +47,7 @@ public class ExplorerTest {
               System.out.println(
                   "FORKJOIN Best Board: " + bestBoard.workDone() + " / " + bestBoard.score());
               System.out.println("FORKJOIN Discoveries : " + explorer.discoveries().size());
+              System.out.println("FORKJOIN Tests : " + explorer.count());
               assertEquals(199, bestBoard.workDone());
               assertEquals(8366, bestBoard.score(), 0.1);
             });

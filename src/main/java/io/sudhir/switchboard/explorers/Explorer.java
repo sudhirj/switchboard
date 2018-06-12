@@ -4,15 +4,22 @@ import io.sudhir.switchboard.boards.Board;
 import java.util.SortedSet;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveAction;
+import java.util.concurrent.atomic.LongAdder;
 import java.util.function.Predicate;
 
 public abstract class Explorer implements Predicate<Board> {
+
+  private LongAdder counter = new LongAdder();
 
   protected ForkJoinPool forkJoinPool() {
     return ForkJoinPool.commonPool();
   }
 
   public abstract SortedSet<Board> discoveries();
+
+  long count() {
+    return counter.longValue();
+  }
 
   protected Board explore(Board board) {
     if (test(board)) {
@@ -38,6 +45,7 @@ public abstract class Explorer implements Predicate<Board> {
           .forEach(
               newBoard -> {
                 if (Explorer.this.test(newBoard)) {
+                  Explorer.this.counter.increment();
                   forkJoinPool().invoke(new RecursiveBoardExplorationAction(newBoard));
                 }
               });
