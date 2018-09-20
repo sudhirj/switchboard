@@ -31,7 +31,7 @@ public class PlayerTest {
         Stream.of("a", "b", "c", "d", "e", "f", "g").map(ConstantDemand::create).collect(toList());
     Board board = Board.create(ImmutableSet.of(constantSupply, optimizingSupply), demands);
     Choice optimisticChoice =
-        new UnreasonablyOptimisticPlayer().bestChoiceFor(board, Goal.MINIMIZE()).get();
+        new LookaheadPlayer().bestChoiceFor(board, Goal.MINIMIZE()).get();
     assertNotNull(optimisticChoice);
     assertEquals(optimizingSupply, optimisticChoice.supply());
 

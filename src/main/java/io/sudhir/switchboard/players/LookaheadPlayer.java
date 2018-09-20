@@ -9,10 +9,7 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentSkipListMap;
 
-public class UnreasonablyOptimisticPlayer implements Player {
-
-  UnreasonablyOptimisticPlayer() {}
-
+public class LookaheadPlayer implements Player {
   @Override
   public Optional<Choice> bestChoiceFor(Board board, Goal goal) {
     return goodChoicesFor(board, goal).stream().findFirst();
